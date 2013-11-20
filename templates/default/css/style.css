@@ -1,0 +1,229 @@
+body{
+	background-color:#191919;
+	text-align: center;
+	color: #0f0f0f;
+	font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+}
+
+a, a:visited, a:active{
+	text-decoration: none;
+}
+
+.defaultBtn, .defaultBtn a, .defaultBtn a:visited, .defaultBtn a:active {
+	border:0px;
+	color:#fff;
+	background:rgb(80,80,80);
+	border-radius:4px;
+	padding:5px 10px;
+	transition:background 0.2s;
+}
+
+.defaultBtn:hover{
+	background:rgb(45,40,30);
+}
+
+.title{
+	font-size:20pt;
+	color:#fff;
+	background:#fdd10e;
+	margin:10px 10px 10px 0px;
+	padding:3px 20px;
+	text-shadow:1px 1px 1px rgba(0,0,0,0.3);
+}
+
+.widgetTitle{
+	font-size:14pt;
+	margin:10px auto;
+	line-height:14pt;
+	color:#fff;
+	background:#fdd10e;
+	margin:10px 5px;
+	padding:3px 15px;
+	text-shadow:1px 1px 1px rgba(0,0,0,0.3);
+}
+
+.registerInputText{
+	height:32px;
+	width:160px;
+	padding: 2px 10px;
+	border:1px dashed rgba(0,0,0,0.2);
+	box-shadow:inset 0px 0px 5px rgba(0,0,0,0);
+	border-radius:6px;
+	background:rgba(0,0,0,0.05);
+	transition:all 0.3s;
+}
+
+.registerInputText:focus{
+	background:rgba(0,0,0,0);
+	width:200px;
+}
+
+#mainDiv{
+	width: 995px;
+	margin: 0px auto;
+}
+
+#header{
+	text-align:left;
+	background-image: url('../../../images/logo.png');
+	background-repeat: no-repeat;
+	background-position: top right;
+	color:#fff;
+	border-radius:4px 4px 0px 0px;
+}
+
+#search{
+	height: 28px;
+	width: 30px;
+	border: 0px;
+	border-radius: 3px;
+	box-shadow: inset 0px 30px 0px rgba(0,0,0,0);
+	transition: width 0.4s, box-shadow 0.4s;
+	background: #fff url("https://a2.sndcdn.com/assets/images/header/header-icons-6e938b6a.png") 1px -353px no-repeat;
+	padding-left: 30px;
+	cursor: pointer;
+	
+}
+
+#search:focus{
+	width: 200px;
+	box-shadow: inset 0px 1px 0px rgba(193,138,5,0.7);
+	cursor: text;
+}
+
+#menu ul{
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+	font-weight: bold;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}	
+
+#menu ul li{
+	display: inline;
+}
+
+#menu a, #menu a:visited, #menu a:active{
+	color: #fff;
+}
+
+.menuItem{
+	display: inline;
+	margin: 0px;
+	padding: 23px 15px 12px 15px;
+	color: #fff;
+	cursor:pointer;
+	border-bottom: 0px solid #c18a05;
+	background: rgba(250,250,200,0.3);
+	transition: border-bottom 0.1s, background 0.5s;
+}
+
+.menuItem:hover{
+	border-bottom: 0px solid #6d470c;
+	background: rgba(250,250,200,0.6);
+}
+
+#menu ul li ul{
+	padding: 0px;
+	margin-top: 31px;
+	border-top: 0px solid #6d470c;
+	list-style: none;
+	position: absolute;
+	display: none;
+	background: rgb(254,209,12) linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(200,200,200,0) 70%, rgba(0,0,0,0) 100%);
+	left: -10px;
+	width: 100%;
+	height: 26px;
+}
+
+#menu ul li ul li{
+	position: relative;
+	display: none;
+	top: 4px;
+	left: 3px;
+	margin: 0px;
+	padding: 4px 20px 2px 20px;
+	color: #fff;
+	border-bottom: 0px solid #c18a05;
+	background: rgba(250,250,200,0.3);
+	transition: background 0.2s;
+}
+
+#menu ul li:hover ul{
+	display: inline;
+}
+
+#menu ul li:hover ul li{
+	display: inline;
+}
+
+#menu ul li ul li:hover{
+	background: rgba(250,250,200,0.6);
+}
+
+#footerBar a, #footerBar a:visited{
+	text-decoration: overline;
+	color: #bbb;
+}
+
+#footerBar a:hover, #footerBar a:active{
+	color: #555;
+}
+
+#sliderContainer img{
+	box-shadow:0px 0px 30px rgba(0,0,0,0.7);
+}
+
+.pages { position: relative; top: 0; left: 0; width: 100%; height: 100%; }
+.page { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+	
+	/* Pages */
+
+#i2{ left: 100%; }
+	
+#i3{ left: 200%;}
+
+.pages{
+	-webkit-transition: left 0.8s;
+	-moz-transition: left 0.8s;
+	-o-transition: left 0.8s;
+	-ms-transition: left 0.8s;
+	transition: left 0.8s;
+}
+
+#a1:target .pages { left: 0%; }
+#a2:target .pages { left: -100%; }
+#a3:target .pages { left: -200%; }
+
+#social{
+	position:fixed;
+	padding:3px;
+	top:20%;
+	left:-12px;
+	background:rgba(255,255,255,0.3);
+	border:1px solid rgba(0,0,0,0.1);
+	border-radius:0px 6px 6px 0px;
+	color:#000;
+	font-size:13pt;
+	transition: all 0.6s;
+}
+
+#social:hover{
+	left:-0px;
+	background:rgba(255,255,255,0.4);
+}
+
+#social img{
+	width:35px;
+	margin:3px;
+	border-radius:3px;
+	border:0px solid black;
+	box-shadow:0px 0px 1px rgba(0,0,0,0.5);
+	transition: all 0.3s;
+}
+#social img:hover{
+	width:40px;
+	margin:3px;
+	border:0px solid black;
+	box-shadow:0px 2px 6px rgba(0,0,0,0.4);
+}

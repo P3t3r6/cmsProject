@@ -2,10 +2,10 @@
 
 <?php
 if (loggedIn() == true) {
-	include '../templates/original/includes/widgets/loggedIn.php';
+	include "../templates/" . $activeTemplate['name'] . "/includes/widgets/loggedIn.php";
 	} else {
-	include '../templates/original/includes/widgets/login.php';}
+	include "../templates/" . $activeTemplate['name'] . "/includes/widgets/login.php";}
 	
-	include '../templates/original/includes/widgets/userCount.php';
+	include "../templates/" . $activeTemplate['name'] . "/includes/widgets/userCount.php";
 ?>
 </div></td>

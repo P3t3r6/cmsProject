@@ -5,7 +5,7 @@
 			
 			</td>
 			
-			<?php include '../templates/original/includes/logo.php';?>
+			<?php include "../templates/" . $activeTemplate['name'] . "/includes/logo.php";?>
 			
 			<td width="40px">
 			
@@ -23,7 +23,7 @@
 			
 				<nav id="menu" style="position:relative; margin-left:10px; top:20px; float:left; width:100%;">
 
-				<?php include '../templates/original/includes/menu.php'; ?>
+				<?php include "../templates/" . $activeTemplate['name'] . "/includes/menu.php"; ?>
 				
 				</nav>
 				

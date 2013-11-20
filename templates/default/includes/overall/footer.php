@@ -5,7 +5,7 @@
 				<!-- vertical div -->
 				</td>
 				
-				<?php include '../templates/original/includes/sidebar.php'; ?>
+				<?php include "../templates/" . $activeTemplate['name'] . "/includes/sidebar.php"; ?>
 				
 				</tr>
 				</table>
@@ -22,7 +22,7 @@
 
 			</td>
 			
-				<?php include '../templates/original/includes/footer.php'?>
+				<?php include "../templates/" . $activeTemplate['name'] . "/includes/footer.php"?>
 							
 			<td width="40px">
 
@@ -38,8 +38,8 @@
 	
 	<a id="pageBottom"/>
 	
-	<?php include '../templates/original/includes/slider.php'; ?>
-	<?php include '../templates/original/includes/social.php'; ?>
+	<?php include "../templates/" . $activeTemplate['name'] . "/includes/slider.php"; ?>
+	<?php include "../templates/" . $activeTemplate['name'] . "/includes/social.php"; ?>
  
  </body>
 </html>

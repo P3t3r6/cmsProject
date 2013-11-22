@@ -31,9 +31,5 @@
 	</a>
 	
 	<a id="pageBottom"/>
-	
-	<?php include "../templates/" . $activeTemplate['name'] . "/includes/slider.php"; ?>
-	<?php include "../templates/" . $activeTemplate['name'] . "/includes/social.php"; ?>
- 
  </body>
 </html>

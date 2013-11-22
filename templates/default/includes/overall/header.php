@@ -1,17 +1,33 @@
-<html>
+<!DOCTYPE html>
+<head>
+	
+	<title>cmsProject</title>
 
-<?php include "../templates/" . $activeTemplate['name'] . "/includes/head.php"; ?>
+	<link rel="stylesheet" type="text/css" href="../templates/<?php echo $activeTemplate['name'] ?>/css/style.css"/>
+	<link href="../images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
 
- <body>
+</head>
 
-	<a id="pageTop"/>
-
-		<div id="mainDiv">
+<body>
+	<div id="mainDiv">
+		<div id="logo">
+			cmsProject
+		</div>
 		
-		<?php include "../templates/" . $activeTemplate['name'] . "/includes/header.php"; ?>
-					
-			<td style="background:#fff; padding:10px;">
-			 <table style="height:100%; width:100%; margin:0px; padding:0px;" border="0px">
-			 <tr>
-			 
-				<td style="vertical-align:top;"><div style="height:100%; width:100%; padding:0px; margin:0px;">
+		<nav>
+		 <ol id="menu">
+		 	<li>Home</li>
+		 	<li>Downloads</li>
+		 	<li>m4
+		 		<ol>
+		 			<li>m4.1</li>
+		 			<li>m4.2</li>
+		 		</ol>
+		 	</li>
+		 	<li>About</li>
+		 	<li>Contacts</li>
+		 </ol>
+		</nav>
+		
+		<div id="pages">
+			<!-- page display -->

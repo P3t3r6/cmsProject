@@ -1,9 +1,28 @@
 @import url(http://fonts.googleapis.com/css?family=Poiret+One);
 
+::-webkit-scrollbar{  
+    width:13px;
+}
+::-webkit-scrollbar-track{  
+    background-color: transparent;
+}
+::-webkit-scrollbar-corner{  
+    background-color: #111;
+}
+::-webkit-scrollbar-thumb{
+    background-color:rgba(255,255,255,0.04);
+	border-radius:15px;
+}  
+::-webkit-scrollbar-thumb:hover {  
+    background-color:rgba(255,255,255,0.08);
+}
+
 body{
 	background:#111;
-	color: #eee;
+	color: #fff;
 	font-family: Calibri, sans-serif;
+	margin:0px;
+	padding:0px;
 }
 
 a, a:visited, a:active{
@@ -11,17 +30,29 @@ a, a:visited, a:active{
 }
 
 .title{
-	font-size:18pt;
+	border:0px solid red;
+	font-size:20pt;
+	font-weight:normal;
 	color:#fff;
-	background:#333;
-	margin:10px 10px 10px 0px;
-	padding:3px 20px;
-	text-shadow:1px 1px 1px rgba(0,0,0,0.3);
+	margin:25px 0px 5px 0px;
+	padding:3px 0px;
+	border-bottom:1px solid rgba(255,255,255,0.3);
+}
+
+#loading {
+	background:#000 url('../../../images/loading.gif') no-repeat center center;
+	background-size:40px 40px;
+	height:100%;
+	width:100%;
+	position: fixed;
+	left:0px;
+	top:0px;
+	z-index: 1000;
 }
 
 #mainDiv{
 	border:0px solid red;
-	min-width: 1024px;
+	min-width: 800px;
 	width:100%;
 	margin: 0px auto;
 	padding:0px;
@@ -29,31 +60,39 @@ a, a:visited, a:active{
 
 #logo{
 	border:0px solid blue;
-	background: url('../../../images/.png');
+	background:url('../../../images/.png');
 	text-align:right;
 	font-family: 'Poiret One', cursive;
 	font-size:60pt;
 	padding:0px 50px;
+	transition:all 0.3s;
+}
+
+#menu a{	
+	color:#fff;
 }
 
 #menu{
 	border:0px solid green;
 	list-style:none;
 	height:50px;
-	margin:0px;
+	margin:0px auto;
+    width: -webkit-fit-content;
 	padding:0px;
 }
 
-#menu li{
+#menu li, #menu a li{
 	border-right:1px solid rgba(255,255,255,0.3);
 	list-style:none;
 	margin:0px;
 	padding:15px 40px;
 	float:left;
+	transition:all 0.3s;
 }
 
-#menu li:last-child{
-	border-right:0px solid #fff;
+#menu li:hover{
+	background:#eee;
+	color:#222;
 }
 
 #menu li ol{
@@ -63,34 +102,30 @@ a, a:visited, a:active{
 	position:absolute;
 	margin:15px -40px;
 	padding:5px 20px;
+	visibility:hidden;
+	opacity:0;
+	transition:all 0.3s;
+}
+
+#menu li:hover ol{
+	visibility:visible;
+	opacity:1;
 }
 
 #menu li ol li{
 	border-bottom:1px solid rgba(0,0,0,0.3);
 	border-right:0px solid #fff;
 	margin:0px;
-	padding:5px 20px;
+	padding:5px 15px;
 	float:none;
+	transition:all 0.1s;
 }
 
-#menu li ol li:last-child{
-	border-bottom:0px solid #fff;
-}
-
-#menu li ol{
-	visibility:hidden;
-}
-
-#menu li:hover{
-	background:#eee;
-	color:#222;
-}
-
-#menu li:hover ol{
-	visibility:visible;
+#menu li ol li:hover{
+	padding:3px 15px 7px 15px;
 }
 
 #pages{
 	border:0px solid deeppink;
-	margin:10px 50px;
+	margin:10px 60px;
 }

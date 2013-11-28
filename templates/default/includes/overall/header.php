@@ -7,15 +7,9 @@
 	<link href="../images/favicon.ico?" rel="shortcut icon" type="image/x-icon"/>
 
 	<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js?ver=1.7.0'></script>	
-	<script>
-		jQuery(window).load(function(){
-			jQuery('#loading').fadeOut(2000);
-		});
-	</script>
 </head>
 
 <body>
- <div id="loading"></div>
 	<div id="mainDiv">
 		<div id="logo">
 			cmsProject
@@ -23,11 +17,11 @@
 		
 		<nav id="navMenu">
 		 <ol id="menu">
-		 	<li>Home</li>
-		 	<a href="http://facebook.com"><li>Downloads</li></a>
+		 	<a href="index.php"><li>Home</li></a>
+		 	<a href="downloads.php"><li>Downloads</li></a>
 		 	<li>Docs
 		 		<ol>
-		 			<li>Tutorial</li>
+		 			<li>Tutorials</li>
 		 			<li>Manual and guide</li>
 		 			<li style="border-bottom:0px solid #fff;">API</li>
 		 		</ol>

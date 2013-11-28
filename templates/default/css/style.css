@@ -18,7 +18,8 @@
 }
 
 body{
-	background:#111;
+	//background:#111;
+	background: url('http://api.thumbr.it/whitenoise-361x370.png?background=111111&noise=626262&density=100&opacity=5');
 	color: #fff;
 	font-family: Calibri, sans-serif;
 	margin:0px;
@@ -88,6 +89,7 @@ a, a:visited, a:active{
 	padding:15px 40px;
 	float:left;
 	transition:all 0.3s;
+	cursor:pointer;
 }
 
 #menu li:hover{

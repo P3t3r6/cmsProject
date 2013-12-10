@@ -69,24 +69,33 @@
 if(isset($_GET['configDb']))
 {
 	mysql_connect('localhost','root','');
-	$dbName=$_GET['dbName'];
+	$dbName=$_GET["dbName"];
 	
 	if (mysql_query("CREATE DATABASE $dbName"))
 	{
-		echo "Database created successfully <br />";
+		echo "Database successfully created";
+		createConnectFile();
 		mysql_select_db($dbName);
-		if (mysql_query('CREATE TABLE Templates(id INT AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(30), active BOOLEAN)'))
+		if (mysql_query('CREATE TABLE templates(id INT AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(30), active BOOLEAN)'))
 		{
-		  echo "Tables successfully created";
+			echo "<br> Tables successfully created";
+			if (mysql_query('INSERT INTO templates VALUES (NULL, "default", 1)'))
+			{
+				echo "<br> Values inserted into table";
+			}
+			else
+			{
+				echo "<br> Error inserting values into table: " . mysql_error();
+			}
 		}
 		else
 		{
-		  echo "Error creating table: " . mysql_error();
+		  echo "<br> Error creating table: " . mysql_error();
 		}
 	}
 	else
 	  {
-	  echo "Error creating database: " . mysql_error();
+	  echo "<br> Error creating database: " . mysql_error();
 	  }
 }
 
@@ -94,12 +103,26 @@ if(isset($_GET['configDb']))
 if(isset($_GET['createTemplates'])){
 	if (mysql_query('CREATE TABLE Templates(id INT AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(30), active BOOLEAN)'))
 	  {
-	  echo "'Templates' successfully created";
+	  echo "Templates successfully created";
 	  }
 	else
 	  {
 	  echo "Error creating database: " . mysql_error();
 	  }
 }
+
+	function createConnectFile(){
+		$fileName = "connect.php";
+		$handle = fopen($fileName, 'w') or die('Cannot open file:  '.$my_file);
+		$data = "<?php
+	\$connect_error = 'An error as ocurred. ini.php error_reporting(0); or connect.php';
+
+	mysql_connect('localhost', 'root', '') or die(\$connect_error);
+	mysql_select_db('$dbName') or die(\$connect_error);
+	?>";
+		fwrite($handle, $data);
+		echo "<br>Created connect.php file";
+}
+	
 ?>
 </body>

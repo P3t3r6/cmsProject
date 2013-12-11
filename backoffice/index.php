@@ -10,6 +10,24 @@ Databse Name - <input type="text" name="dbName"/>
 <button name="createTemplates" value="createTemplates" type="submit" >Create Templates Table</button>
 </form>
 
+
+
+<?php
+	$templates = mysql_fetch_assoc(mysql_query('SELECT name FROM templates'));
+	echo "<ol>";
+		foreach ($templates as $template){
+			echo '<li>' . $template . '</li>';
+		}
+	echo "</ol>";
+
+	/*echo "<select>";
+		foreach ($templates as $template){
+			echo '<option value="' . $template . '">' . $template . '</option>';
+		}
+	echo "</select>";*/
+
+?>
+
 <?php
 if(isset($_GET['configVars'])){
 	$dbName=$_GET['dbName'];

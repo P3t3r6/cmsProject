@@ -45,7 +45,7 @@
 		#menuHiderlabel{
 			background:#222;
 			color:#eee;
-			font-size:12pt;
+			font-size:11pt;
 			display:block;
 			width:100%;
 			margin:0px auto;
@@ -54,7 +54,7 @@
 		}
 		
 		#menuHiderlabel:hover{
-			background:#ccc;
+			background:#eee;
 			color:#222;
 		}
 		
@@ -155,32 +155,39 @@
 </head>
 
 <body>
+<form name="dropdb" action="" method="get">
+	<button name="dropdb" value="dropdb" type="submit" style="top:0px; left:0px; position:fixed;">Drop 'cmsProject'</button>
+</form>
+
 <form name="configDb" action="" method="get">
 	<br />
 		<span style="font-family: 'Poiret One', cursive; font-size:70pt;">cmsProject</span>
 	<br /><br /><br />
 		Welcome to the <span style="font-family: 'Poiret One', cursive;">cmsProject</span><br />
-		Please give your new project/database a name.<br /><br />
-	<input type="text" name="dbName" placeholder="Database name"/>
+		Please give your new project/database a name.<br />
+		<span style="font-size:8pt;"> You can edit later </span><br /><br />
+		
+	<input type="text" name="dbName" id="dbName" placeholder="Database name" required/>
 	<button name="configDb" value="configDb" type="submit">Submit</button>
-	<br /><br />
-	<span style="font-size:9pt; color:#444; line-height:13px;">Show advanced options</span>
-	<label id="menuHiderlabel" for="menuHider">&equiv;</label>
 	
+	<br /><br />
+	<label id="menuHiderlabel" for="menuHider">Show advanced options</label>
 	<input id="menuHider" type="checkbox"/>
 	
 	<ul id="menu">
 		<label>
 			<li>
 				<label class="binary_switch">
-					<input type="checkbox">
+					<input type="checkbox" name="deleteIfExists" value="deleteIfExists">
 						<span class="binary_switch_track"></span>
 						<span class="binary_switch_button"></span>
 					</input>
 				</label>
 				Delete database if it already exists
+				<!----------------------------------------- PHP ---------------------------------------------------------->
 			</li>
 		</label>
+		
 		<label>
 			<li>
 				<label class="binary_switch">
@@ -192,6 +199,7 @@
 				Create users table
 			</li>
 		</label>
+		
 		<label>
 			<li>
 				<label class="binary_switch">
@@ -203,32 +211,88 @@
 			Option 3
 			</li>
 		</label>
-		<label>
-			<li>
-				<label class="binary_switch">
-					<input type="checkbox">
-						<span class="binary_switch_track"></span>
-						<span class="binary_switch_button"></span>
-					</input>
-				</label>
-			Option 4
-			</li>
-		</label>
 	</ul>
 </form>
 
 <?php
 if(isset($_GET['configDb']))
 {
-mysql_connect('localhost','root','');
-$dbName=$_GET["dbName"];
-	
-	if (mysql_query("CREATE DATABASE $dbName"))
+	if (connect())
 	{
-		echo "Database successfully created";
-			$fileName = "core/database/connect.php";
-			$handle = fopen($fileName, 'w') or die('Cannot open file:  '.$my_file);
-			$data = "<?php
+		if (createdb())
+		{
+			createConnectFile();
+			createTemplates();
+		}
+	}
+}
+
+// -------------------------------------------- Functions ------------------------------------------- //
+
+	function connect()
+	{
+		if (mysql_connect('localhost','root',''))
+		{
+			$success = true;
+		}
+			else
+		{
+			mysql_error();
+			$success = false;
+		}
+		return $success;
+	}
+	
+// ------------------------------------ //
+
+	function createdb()
+	{
+		$dbName = $_GET["dbName"];
+		
+		if (mysql_query("CREATE DATABASE $dbName"))
+		{
+			echo "Database successfully created";
+			$success = true;
+		}
+		else
+		{
+			if (mysql_errno() == 1007 )
+			{
+				echo "<script type=\"text/javascript\">
+						function check()
+						{
+							document.getElementById(\"menuHider\").checked=true
+						}
+						
+						function fillInput()
+						{
+							document.getElementById(\"dbName\").value=\"$dbName\"
+						}
+						
+						check();
+						fillInput();
+					  </script>";
+				echo "Database \"$dbName\"already exists!";
+				echo "<br><br>Please turn on \"Delete database if it already exists\" to replace it <br> or <br> give your database a different name.";
+			}
+				else
+			{
+				echo "<br> Error creating database: " . mysql_error(); // exists - errno() 1007
+			}
+			$success = false;
+		}
+		return $success;
+	}
+	
+// ------------------------------------ //
+
+	function createConnectFile()
+	{
+		$dbName = $_GET["dbName"];
+		
+		$fileName = "core/database/connect.php";
+		$handle = fopen($fileName, 'w') or die('Cannot open file:  '.$my_file);
+		$data = "<?php
 \$connect_error = 'An error as ocurred. ini.php error_reporting(0); or connect.php';
 
 mysql_connect('localhost', 'root', '') or die(\$connect_error);
@@ -237,8 +301,15 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 			fwrite($handle, $data);
 			fclose($handle);
 			echo "<br>Created connect.php file";
-		
+	}
+
+// ------------------------------------ //
+
+	function createTemplates()
+	{
+		$dbName = $_GET["dbName"];
 		mysql_select_db($dbName);
+		
 		if (mysql_query('CREATE TABLE templates(id INT AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(30), active BOOLEAN)'))
 		{
 			echo "<br> Templates table successfully created";
@@ -251,16 +322,38 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 			{
 				echo "<br> Error inserting values into templates table: " . mysql_error();
 			}
+			$success = true;
 		}
 		else
 		{
-		  echo "<br> Error creating table: " . mysql_error(); // exists - errno() 1050
+			if (mysql_errno() == 1050 )
+			{
+				echo "Table already exists!";
+			}
+				else
+			{
+				echo "<br> Error creating table: " . mysql_error();  // exists - errno() 1050
+			}
+			$success = false;
 		}
+		return $success;
 	}
-	else
-	  {
-	  echo "<br> Error creating database: " . mysql_error(); // exists - errno() 1007
-	  }
+	
+// ------------------------------------ //
+
+if(isset($_GET['dropdb']))
+{
+	connect();
+	
+	if (mysql_query('DROP DATABASE cmsProject'))
+	{
+		echo "Database dropped";
+	}
+		else
+	{
+		mysql_error();
+	}
 }
+
 ?>
 </body>

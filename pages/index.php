@@ -9,10 +9,6 @@
 <div id="loading"></div>
 <h1 class="title">Welcome to the <span style="font-family: 'Poiret One', cursive;">cmsProject</span></h1>
 
-<a style="font-size:20pt;" download="Noizeskill Red Army Mini-Mix.mp3" href="http://stream17.mixcloud.com/cloudcasts/originals/2/5/d/e/50cc-e762-4f80-bdef-a8482e81af50.mp3">
-Noizeskill Red Army Mini-Mix
-</a>
-
 <?php
 require( "config.php" );
 $action = isset( $_GET['action'] ) ? $_GET['action'] : "";

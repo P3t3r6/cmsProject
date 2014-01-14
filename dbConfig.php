@@ -146,27 +146,66 @@
 			right:2px;
 			left:12px;
 		}
+		
+		.hide{
+			opacity:0;
+			visibility:hidden;
+		}
+		
+		.popup{
+			background:#eee;
+			color:#222;
+			width:100%;
+			margin:12% 0px 0px 0px;
+			padding:20px 0px;
+		}
+		
+		.popupbg{
+			background:rgba(0,0,0,0.8);
+			position:fixed;
+			height:100%;
+			width:100%;
+			margin:0px;
+			padding:0px;
+			top:0px;
+			left:0px;
+			z-index:99;
+			transition:all 0.3s ease-in-out 0.3s;
+		}
 	</style>
 	
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script type="text/javascript">
 		a = 0;
 		function deleteIfExistsPopup(){
 			a++;
 			if (a == 1){
-				alert("Careful! This might delete important data to you!");
+				$("#popupbg").toggleClass("hide");
 			}
 			
-			//alert(a);
-			
 			if(a >= 2){
-				//alert("Gooodd booyy ^^,   " + a);
 				a = 0;
 			}
 		}
+		
+		//.prop( "checked" )
+		/// ------------------------------------------- USE IS.(CHECKED)
 	</script>
 </head>
 
 <body>
+<div id="popupbg" class="popupbg hide">
+	<div class="popup">
+		<div style="margin:0px auto; width:800px; text-align:left;">
+			<h2 style="color:#c44;">Careful!</h2>
+			<p>This might delete important data to you!</p>
+			<button onClick="$('#popupbg').toggleClass('hide')">I got this</button>
+			<button onClick="$('#popupbg').toggleClass('hide'); deleteIfExists.checked=true;">Nah bro, undo it</button>
+			<p></p>
+		</div>
+	</div>
+</div>
+
 <input type="text" id="debugConsole" style="color:#333; width:100%; margin:0px; padding:5px; position:fixed; top:0px; left:0px; background:none; border:0px; outline:none;" />
 
 <script type="text/javascript">
@@ -210,7 +249,7 @@
 </form>
 
 <form name="configDb" action="" method="get">
-	<br />
+	<br /><br />
 		<span style="font-family: 'Poiret One', cursive; font-size:70pt;">cmsProject</span>
 	<br /><br /><br />
 		Welcome to the <span style="font-family: 'Poiret One', cursive;">cmsProject</span><br />
@@ -228,7 +267,7 @@
 		<label>
 			<li>
 				<label class="binary_switch">
-					<input type="checkbox" name="deleteIfExists" onclick="deleteIfExistsPopup()" value="true">
+					<input type="checkbox" name="deleteIfExists" onclick="deleteIfExistsPopup()" id="deleteIfExists" value="true">
 						<span class="binary_switch_track"></span>
 						<span class="binary_switch_button"></span>
 					</input>

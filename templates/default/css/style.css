@@ -4,22 +4,26 @@
     width:13px;
 }
 ::-webkit-scrollbar-track{  
-    background-color: transparent;
+    background-color: #111;
 }
 ::-webkit-scrollbar-corner{  
     background-color: #111;
 }
 ::-webkit-scrollbar-thumb{
-    background-color:rgba(255,255,255,0.04);
-	border-radius:15px;
+    background-color:#222;
 }  
 ::-webkit-scrollbar-thumb:hover {  
-    background-color:rgba(255,255,255,0.08);
+    background-color:#333;
+}
+
+::selection{
+	background:#fff;
+	color:#000;
 }
 
 body{
-	//background:#111;
-	background: url('http://api.thumbr.it/whitenoise-361x370.png?background=111111&noise=626262&density=100&opacity=5');
+	background:#111;
+	//background: url('http://api.thumbr.it/whitenoise-361x370.png?background=111111&noise=626262&density=100&opacity=5');
 	color: #fff;
 	font-family: Calibri, sans-serif;
 	margin:0px;

@@ -142,71 +142,21 @@
 		}
 
 		.binary_switch input[type="checkbox"]:checked ~ .binary_switch_button {
-			background:rgba(50,180,70,1);
+			background:rgba(60,200,80,1);
 			right:2px;
 			left:12px;
 		}
-	</style>
-	
-	<script type="text/javascript">
-		a = 0;
-		function deleteIfExistsPopup(){
-			a++;
-			if (a == 1){
-				alert("Careful! This might delete important data to you!");
-			}
-			
-			//alert(a);
-			
-			if(a >= 2){
-				//alert("Gooodd booyy ^^,   " + a);
-				a = 0;
-			}
+
+		.binary_switch input[type="checkbox"]:active ~ .binary_switch_button {
+			opacity:.8
 		}
-	</script>
+
+	</style>
 </head>
 
 <body>
-<input type="text" id="debugConsole" style="color:#333; width:100%; margin:0px; padding:5px; position:fixed; top:0px; left:0px; background:none; border:0px; outline:none;" />
-
-<script type="text/javascript">
-	a = 0;
-	debugConsole.addEventListener('input', function(){
-		if (debugConsole.value == "debug"){
-			a++;
-			if (a == 1){
-				//alert("You are now debuging, Son.");
-				debugConsole.value = "";
-				debugMenu.style.visibility = "visible";
-			}
-			if (a >= 2){
-				debugConsole.value = "";
-				debugMenu.style.visibility = "hidden";
-				a = 0;
-			}
-		}
-		
-		if (debugConsole.value == "do a barrel roll"){
-			document.body.style.webkitTransform = "rotate(0deg)";
-			document.body.style.transition = "all 2s";
-			document.body.style.webkitTransform = "rotate(360deg)";
-				setTimeOut(function(){
-					document.body.style.transition = " ";
-					document.body.style.webkitTransform = "rotate(0deg)";
-				}, 3000);
-		}
-		
-	}, true);
-</script>
-
-<form id="debugMenu" method="get" style="visibility:hidden; position:fixed; text-align:left;">
-	<button name="debugMenu" value="connect" type="submit">connect()</button>
-	<button name="debugMenu" value="dropdb" type="submit">drop()</button>
-	<button name="debugMenu" value="createdb" type="submit">createdb()</button>
-	<button name="debugMenu" value="createConnectFile" type="submit">createConnectFile()</button>
-	<button name="debugMenu" value="createTemplates" type="submit">createTemplates()</button>
-	<br />
-	<input type="text" name="dbName" placeholder="Database name"/>
+<form name="dropdb" action="" method="get">
+	<button name="dropdb" value="dropdb" type="submit" style="top:0px; left:0px; position:fixed;">Drop 'cmsProject'</button>
 </form>
 
 <form name="configDb" action="" method="get">
@@ -215,7 +165,7 @@
 	<br /><br /><br />
 		Welcome to the <span style="font-family: 'Poiret One', cursive;">cmsProject</span><br />
 		Please give your new project/database a name.<br />
-		<span style="font-size:10pt; color:#aaa;"> (You will be able to edit this later) </span><br /><br />
+		<span style="font-size:8pt;"> You can edit later </span><br /><br />
 		
 	<input type="text" name="dbName" id="dbName" placeholder="Database name" required/>
 	<button name="configDb" value="configDb" type="submit">Submit</button>
@@ -228,12 +178,13 @@
 		<label>
 			<li>
 				<label class="binary_switch">
-					<input type="checkbox" name="deleteIfExists" onclick="deleteIfExistsPopup()" value="true">
+					<input type="checkbox" name="deleteIfExists" value="deleteIfExists">
 						<span class="binary_switch_track"></span>
 						<span class="binary_switch_button"></span>
 					</input>
 				</label>
 				Delete database if it already exists
+				<!----------------------------------------- PHP ---------------------------------------------------------->
 			</li>
 		</label>
 		
@@ -249,11 +200,51 @@
 			</li>
 		</label>
 		
+		<label>
+			<li>
+				<label class="binary_switch">
+					<input type="checkbox">
+						<span class="binary_switch_track"></span>
+						<span class="binary_switch_button"></span>
+					</input>
+				</label>
+			Option 3
+			</li>
+		</label>
 	</ul>
 </form>
 
+<style type="text/css">
+	#consoleDiv{
+		border:10px solid #222;
+		margin:0px auto;
+		padding:10px;
+		font-size:13pt;
+		text-align:left;
+		background:#000;
+		color:#0f0;
+		height:300px;
+		width:700px;
+		border-radius:10px;
+	}
+	
+	@-webkit-keyframes blinking{
+			0%{opacity:1;}
+			55%{opacity:1;}
+			60%{opacity:0;}
+			95%{opacity:0;}
+	}
+	
+	#blink{
+		opacity:1;
+		-webkit-animation:blinking 1s infinite;
+	}
+</style>
+
+<div id="consoleDiv">
+<code>
 <?php
-if (isset($_GET["configDb"]))
+if(isset($_GET['configDb']))
 {
 	if (connect())
 	{
@@ -271,12 +262,11 @@ if (isset($_GET["configDb"]))
 	{
 		if (mysql_connect('localhost','root',''))
 		{
-			//echo "<br />Connected.";
 			$success = true;
 		}
 			else
 		{
-			echo mysql_error();
+			mysql_error();
 			$success = false;
 		}
 		return $success;
@@ -288,14 +278,9 @@ if (isset($_GET["configDb"]))
 	{
 		$dbName = $_GET["dbName"];
 		
-		if (isset($_GET["deleteIfExists"]) && $_GET["deleteIfExists"] == "true")
-		{
-			dropdb();
-		}
-		
 		if (mysql_query("CREATE DATABASE $dbName"))
 		{
-			echo "<br />Database successfully created";
+			echo "Database successfully created";
 			$success = true;
 		}
 		else
@@ -316,7 +301,7 @@ if (isset($_GET["configDb"]))
 						check();
 						fillInput();
 					  </script>";
-				echo "<br />Database \"$dbName\" already exists!";
+				echo "Database \"$dbName\" already exists!";
 				echo "<br><br>Please turn on \"Delete database if it already exists\" to replace it <br> or <br> give your database a different name.";
 			}
 				else
@@ -328,25 +313,6 @@ if (isset($_GET["configDb"]))
 		return $success;
 	}
 	
-// ------------------------------------ //
-	
-	function dropdb()
-	{
-		$dbName = $_GET["dbName"];
-		
-		if (mysql_query("DROP DATABASE $dbName"))
-		{
-			echo "Database dropped";
-			$success = true;
-		}
-			else
-		{
-			echo mysql_error();
-			$success = false;
-		}
-		return $success;
-	}
-
 // ------------------------------------ //
 
 	function createConnectFile()
@@ -401,34 +367,25 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 		}
 		return $success;
 	}
-
-// -------------------------------------------  Debug Menu  ---------------------------------------- //
-
-if(isset($_GET['debugMenu']))
-{
-	$debugMenu = $_GET['debugMenu'];
 	
-	switch ($debugMenu){
-		case "connect":
-			connect();
-			break;
-		case "dropdb":
-			connect();
-			dropdb();
-			break;
-		case "createdb":
-			connect();
-			createdb();
-			break;
-		case "createConnectFile":
-			connect();
-			createConnectFile();
-			break;
-		case "createTemplates":
-			connect();
-			createTemplates();
-			break;
+// ------------------------------------ //
+
+if(isset($_GET['dropdb']))
+{
+	connect();
+	
+	if (mysql_query('DROP DATABASE cmsProject'))
+	{
+		echo "Database dropped";
+	}
+		else
+	{
+		mysql_error();
 	}
 }
+
 ?>
+<br />localhost> <span id="blink"><b>_</b></span>
+</code>
+</div>
 </body>

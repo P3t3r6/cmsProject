@@ -10,7 +10,7 @@
 <h1 class="title">Welcome to the <span style="font-family: 'Poiret One', cursive;">cmsProject</span></h1>
 
 <?php
-require( "config.php" );
+require( "../core/classes/article.php" );
 $action = isset( $_GET['action'] ) ? $_GET['action'] : "";
 
 switch ( $action ) {

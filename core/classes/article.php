@@ -1,45 +1,19 @@
 <?php
 
-/**
- * Class to handle articles
- */
+// Class to handle articles
 
 class Article
 {
-  // Properties
+  // Properties  
+  public $id = null; 			  // @var int The article ID from the database
+  public $publicationDate = null; // @var int When the article is to be / was first published
+  public $title = null; 		  // @var string Full title of the article
+  public $summary = null; 		  // @var string A short summary of the article
+  public $content = null; 		  // @var string The HTML content of the article
 
-  /**
-  * @var int The article ID from the database
-  */
-  public $id = null;
-
-  /**
-  * @var int When the article is to be / was first published
-  */
-  public $publicationDate = null;
-
-  /**
-  * @var string Full title of the article
-  */
-  public $title = null;
-
-  /**
-  * @var string A short summary of the article
-  */
-  public $summary = null;
-
-  /**
-  * @var string The HTML content of the article
-  */
-  public $content = null;
-
-
-  /**
-  * Sets the object's properties using the values in the supplied array
-  *
-  * @param assoc The property values
-  */
-
+  
+	// Sets the object's properties using the values in the supplied array
+	// @param assoc The property values
   public function __construct( $data=array() ) {
     if ( isset( $data['id'] ) ) $this->id = (int) $data['id'];
     if ( isset( $data['publicationDate'] ) ) $this->publicationDate = (int) $data['publicationDate'];
@@ -47,19 +21,12 @@ class Article
     if ( isset( $data['summary'] ) ) $this->summary = preg_replace ( "/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['summary'] );
     if ( isset( $data['content'] ) ) $this->content = $data['content'];
   }
-
-
-  /**
-  * Sets the object's properties using the edit form post values in the supplied array
-  *
-  * @param assoc The form post values
-  */
-
+  
+	// Sets the object's properties using the edit form post values in the supplied array
+	// @param assoc The form post values
   public function storeFormValues ( $params ) {
-
     // Store all the parameters
     $this->__construct( $params );
-
     // Parse and store the publication date
     if ( isset($params['publicationDate']) ) {
       $publicationDate = explode ( '-', $params['publicationDate'] );
@@ -71,13 +38,9 @@ class Article
     }
   }
 
-
-  /**
-  * Returns an Article object matching the given article ID
-  *
-  * @param int The article ID
-  * @return Article|false The article object, or false if the record was not found or there was a problem
-  */
+	// Returns an Article object matching the given article ID
+	// @param int The article ID
+	// @return Article|false The article object, or false if the record was not found or there was a problem
 
   public static function getById( $id ) {
     $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
@@ -89,15 +52,12 @@ class Article
     $conn = null;
     if ( $row ) return new Article( $row );
   }
+  
+	// Returns all (or a range of) Article objects in the DB
 
-
-  /**
-  * Returns all (or a range of) Article objects in the DB
-  *
-  * @param int Optional The number of rows to return (default=all)
-  * @param string Optional column by which to order the articles (default="publicationDate DESC")
-  * @return Array|false A two-element array : results => array, a list of Article objects; totalRows => Total number of articles
-  */
+	// @param int Optional The number of rows to return (default=all)
+	// @param string Optional column by which to order the articles (default="publicationDate DESC")
+	// @return Array|false A two-element array : results => array, a list of Article objects; totalRows => Total number of articles
 
   public static function getList( $numRows=1000000, $order="publicationDate DESC" ) {
     $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
@@ -121,11 +81,7 @@ class Article
     return ( array ( "results" => $list, "totalRows" => $totalRows[0] ) );
   }
 
-
-  /**
-  * Inserts the current Article object into the database, and sets its ID property.
-  */
-
+	// Inserts the current Article object into the database, and sets its ID property.
   public function insert() {
 
     // Does the Article object already have an ID?
@@ -143,11 +99,8 @@ class Article
     $this->id = $conn->lastInsertId();
     $conn = null;
   }
-
-
-  /**
-  * Updates the current Article object in the database.
-  */
+  
+	// Updates the current Article object in the database.
 
   public function update() {
 
@@ -167,10 +120,7 @@ class Article
     $conn = null;
   }
 
-
-  /**
-  * Deletes the current Article object from the database.
-  */
+	// Deletes the current Article object from the database.
 
   public function delete() {
 

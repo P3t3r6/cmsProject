@@ -1,7 +1,13 @@
 <head>
 	<title>Welcome</title>
 	<style type="text/css">
-	@import url(http://fonts.googleapis.com/css?family=Poiret+One);
+	
+		@font-face {
+		  font-family: 'Poiret One';
+		  font-style: normal;
+		  font-weight: 400;
+		  src: url('resources/PoiretOne-Regular.ttf');
+		}
 	
 		body{
 			background:#111;
@@ -174,17 +180,12 @@
 		}
 	</style>
 	
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="resources/jquery-1.10.2.js"></script>
 	<script type="text/javascript">
-		a = 0;
 		function deleteIfExistsPopup(){
-			a++;
-			if (a == 1){
-				$("#popupbg").toggleClass("hide");
-			}
-			
-			if(a >= 2){
-				a = 0;
+			if ($('#deleteIfExists').is(':checked'))
+			{
+				$('#popupbg').toggleClass('hide');
 			}
 		}
 		
@@ -197,10 +198,10 @@
 <div id="popupbg" class="popupbg hide">
 	<div class="popup">
 		<div style="margin:0px auto; width:800px; text-align:left;">
-			<h2 style="color:#c44;">Careful!</h2>
+			<h2 style="color:#c44; font-weight:100;">Careful!</h2>
 			<p>This might delete important data to you!</p>
-			<button onClick="$('#popupbg').toggleClass('hide')">I got this</button>
-			<button onClick="$('#popupbg').toggleClass('hide'); deleteIfExists.checked=true;">Nah bro, undo it</button>
+			<button onClick="$('#popupbg').toggleClass('hide')">Ok</button>
+			<button onClick="$('#popupbg').toggleClass('hide'); $('#deleteIfExists').prop('checked', false);">Cancel</button>
 			<p></p>
 		</div>
 	</div>
@@ -252,7 +253,7 @@
 	<br /><br />
 		<span style="font-family: 'Poiret One', cursive; font-size:70pt;">cmsProject</span>
 	<br /><br /><br />
-		Welcome to the <span style="font-family: 'Poiret One', cursive;">cmsProject</span><br />
+		Welcome to the <span style="font-family:'Poiret One', cursive;">cmsProject</span><br />
 		Please give your new project/database a name.<br />
 		<span style="font-size:10pt; color:#aaa;"> (You will be able to edit this later) </span><br /><br />
 		

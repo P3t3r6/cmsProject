@@ -1,5 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Poiret+One);
 
+@font-face {
+  font-family: 'Poiret One';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../../resources/PoiretOne-Regular.ttf');
+}
+
 ::-webkit-scrollbar{  
     width:13px;
 }
@@ -53,6 +60,7 @@ a, a:visited, a:active{
 	left:0px;
 	top:0px;
 	z-index: 1000;
+	visibility:hidden;
 }
 
 #mainDiv{

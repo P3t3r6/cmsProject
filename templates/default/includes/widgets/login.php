@@ -1,47 +1,44 @@
-<form action="login.php" method="post"
-style="width:245px; padding:3px; text-align:center; margin: 10px 0px;">
+<form action="login" method="get"
+style="width:300px; padding:3px; text-align:center; margin: 10px 0px;">
 
-	<input type="text"
-	name="username"
-	placeholder="User"
-	style="width:200px;
-			height:30px;
-			color:#c18a05;
-			padding:4px;
-			border:0px;
-			box-shadow:0px 1px 6px rgba(0,0,0,0.4);
-			border-radius:5px 5px 0px 0px;"
-	required/>
+	<input type="text" name="username" placeholder="User" required/>
 
-	<input type="password"
-	name="password"
-	placeholder="Password"
-	style="width:200px;
-			height:30px;
-			color:#c18a05;
-			padding:4px;
-			border:0px;
-			box-shadow:0px 3px 6px rgba(0,0,0,0.4);
-			border-radius:0px 0px 5px 5px;"
-	required/>
+	<input type="password" name="password" placeholder="Password" required/>
 	
-	<table cellspacing="0px" cellpadding="0px" style="text-align:center; width:200px; margin:15px auto 15px auto;">
+	<table cellspacing="0px" cellpadding="0px" style="margin:15px auto 15px auto; border:1px solid red;">
 		<tr>
-		 <td colspan="2" style="padding:0px; margin:0px; border:0px;">
-			<input type="submit" value="Login" class="defaultBtn"
-			style="width:100%; font-size:13pt; font-weight:bold; border-radius:4px 4px 0px 0px; maring:0px;"/>
+		 <td colspan="2" style="padding:0px; margin:0px; border:1px solid red;">
+			<input type="submit" value="Login" class="defaultBtn"/>
 		 </td>
 		</tr>
 		
 		<tr style="padding:0px; margin:0px; border:0px;">
 		 <td style="padding:0px; margin:0px; border:0px;">
-			<a href="register.php" class="defaultBtn" style="padding:1px 25px; border-radius:0px 0px 0px 4px; color:#fff;">Register</a>
+			<a href="register.php" class="defaultBtn">Register</a>
 		 </td>
 		 
 		 <td style="padding:0px; margin:0px; border:0px;">
-			<a href="register.php" class="defaultBtn" style="padding:1px 25px; border-radius:0px 0px 4px 0px; color:#fff;">Forgot?</a>
+			<a class="defaultBtn" style="padding:1px 25px; border-radius:0px 0px 4px 0px; color:#fff;">Forgot?</a>
 		 </td>
 		</tr>
 		
+	</table>
+	
+	<style type="text/css">
+	td{
+		border:0px solid green;
+		margin:0px;
+		padding:0px;
+	}
+	</style>
+	
+	<table cellspacing="0px" style="margin:0px auto;">
+		<tr>
+			<td colspan="2" style="margin:0px; padding:0px;"><button style="margin:0px; padding:10px 71px;">Login</button></td>
+		</tr>
+		<tr>
+			<td style="margin:0px; padding:0px;"><button style="margin:0px; display:block; width:100%;">Register</button></td>
+			<td style="margin:0px; padding:0px;"><button href="register.php" style="margin:0px; display:block; width:100%;">Forgot?</button></td>
+		</tr>
 	</table>
 </form>

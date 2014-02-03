@@ -1,13 +1,7 @@
 cmsProject
 ==========
 
-dbConfig.php has now a debug menu.  
-wow.  
-such technology.  
-much debugging.
-
 To do list!
 ----------
-#####dbConfig.php
-    -Allow users to:  
-        *Create tables inside existing db
+-Check if config has been done (Temporary index.php file/New file creation on config)
+-Enable "Only create tables" on an existing database. (dbConfig.php)

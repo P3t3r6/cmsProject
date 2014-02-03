@@ -1,56 +1,89 @@
 <?php include '../core/init.php';
+
+	if (isset($_GET['setTemplate']))
+	{
+		$templates = mysql_query('SELECT * FROM templates');
+		while ($template = mysql_fetch_array($templates))
+		{
+				if ($template['active'] == 1)
+				{
+					mysql_query('UPDATE templates SET active = 0');
+				}
+				else
+				{
+					echo '<option value="' . $template["name"] . '">' . $template["name"] . '</option>';
+				}
+		}
+		
+		$newTemplate = $_GET['newTemplate'];
+		mysql_query('UPDATE templates SET active = "1" WHERE name = "' . $newTemplate . '"');
+	}
+	
 	  include '../templates/getTop.php'; ?>
 
-<form name="configVars" action="" method="get">
-Databse Name - <input type="text" name="dbName"/>
-<br /><button name="configVars" value="configVars" type="submit">Submit</button>
+<script src="../plugins/ckeditor/ckeditor.js"></script>
+
+<form method="get">
+<h1 class="articleTitle">Template</h1>
+<table>
+	<tr>
+		<td>
+			<?php
+				$templates = array();
+				$templates = mysql_query('SELECT * FROM templates');
+				
+				echo "<select name='newTemplate'>";
+					while ($template = mysql_fetch_array($templates)){
+						if ($template['active'] == 1)
+						{
+							echo '<option value="' . $template["name"] . '">' . $template["name"] . ' (Current)' .'</option>';
+						}
+						else
+						{
+							echo '<option value="' . $template["name"] . '">' . $template["name"] . '</option>';
+						}
+					}
+				echo "</select>";
+			?>
+		</td>
+		
+		<td>
+			<button type="submit" name="setTemplate" value="set">Set</button>
+		</td>
+	</tr>
+	
+	<tr>
+		<td><input type="text" placeholder="Template name"/></td>
+		<td><button type="submit" name="newTemplate" value="newTemplate">New</button></td>
+		<td>
+		<?php 
+			if (mysql_query('INSERT INTO templates VALUES (NULL, "default", 1)'))
+			{
+				echo "<span style='color:#5d7;'>Template Created</span>";
+			}
+			else
+			{
+				echo "<br> Error inserting values into templates table: " . mysql_error();
+			}
+		?>
+		</td>
+	</tr>
+</table>
 </form>
-
-<form name="createTemplates" action="" method="get">
-<button name="createTemplates" value="createTemplates" type="submit" >Create Templates Table</button>
-</form>
-
-
 
 <?php
-	$templates = mysql_fetch_assoc(mysql_query('SELECT name FROM templates'));
-	echo "<ol>";
-		foreach ($templates as $template){
-			echo '<li>' . $template . '</li>';
-		}
-	echo "</ol>";
-
-	/*echo "<select>";
-		foreach ($templates as $template){
-			echo '<option value="' . $template . '">' . $template . '</option>';
-		}
-	echo "</select>";*/
 
 ?>
 
-<?php
-if(isset($_GET['configVars'])){
-	$dbName=$_GET['dbName'];
-	if (mysql_query("CREATE DATABASE $dbName"))
-	  {
-	  echo "Database created successfully";
-	  }
-	else
-	  {
-	  echo "Error creating database: " . mysql_error();
-	  }
-}
+<h1 class="articleTitle">Articles</h1>
+<button>Create</button>
+<button>Edit</button>
+<button>Delete</button>
 
-if(isset($_GET['createTemplates'])){
-	if (mysql_query('CREATE TABLE Templates(id INT AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(30), active BOOLEAN)'))
-	  {
-	  echo "'Templates' successfully created";
-	  }
-	else
-	  {
-	  echo "Error creating database: " . mysql_error();
-	  }
-}
-?>
+<script>
+	// Replace the <textarea id="editor1"> with a CKEditor
+	// instance, using default configuration.
+	CKEDITOR.replace( 'editor1' );
+</script>
 
 <?php include '../templates/getBot.php'; ?>

@@ -18,6 +18,7 @@
 		<nav id="navMenu">
 		 <ol id="menu">
 		 	<a href="index.php"><li>Home</li></a>
+		 	<a href="archive.php"><li>Archive</li></a>
 		 	<a href="downloads.php"><li>Downloads</li></a>
 		 	<li>Docs
 		 		<ol>

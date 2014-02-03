@@ -8,7 +8,11 @@
 		  font-weight: 400;
 		  src: url('resources/PoiretOne-Regular.ttf');
 		}
-	
+		
+		a, a:active, a:focus, a:visited, a:hover{
+			color:#fff;
+		}
+		
 		body{
 			background:#111;
 			color:#eee;
@@ -48,6 +52,14 @@
 			cursor:pointer;
 		}
 		
+		ul{
+			list-style:none;
+			text-align:left;
+			display:inline-block;
+			padding:0px;
+			margin:0px;
+		}
+		
 		#menuHiderlabel{
 			background:#222;
 			color:#eee;
@@ -69,7 +81,7 @@
 		}
 		
 		#menuHider:checked ~ #menu{
-			max-height:60px;
+			max-height:45px;
 		}
 		
 		#menuHider:checked ~ #menu li{
@@ -84,6 +96,7 @@
 			font-size:12pt;
 			padding:0px;
 			margin:0px;
+			display:block;
 			overflow:hidden;
 			box-shadow:inset 0px 5px 15px rgba(0,0,0,0.5);
 			max-height:0px;
@@ -188,9 +201,6 @@
 				$('#popupbg').toggleClass('hide');
 			}
 		}
-		
-		//.prop( "checked" )
-		/// ------------------------------------------- USE IS.(CHECKED)
 	</script>
 </head>
 
@@ -239,17 +249,18 @@
 	}, true);
 </script>
 
-<form id="debugMenu" method="get" style="visibility:hidden; position:fixed; text-align:left;">
+<form name="debugMenu" method="get" style="visibility:hidden; position:fixed; text-align:left;">
 	<button name="debugMenu" value="connect" type="submit">connect()</button>
 	<button name="debugMenu" value="dropdb" type="submit">drop()</button>
 	<button name="debugMenu" value="createdb" type="submit">createdb()</button>
 	<button name="debugMenu" value="createConnectFile" type="submit">createConnectFile()</button>
 	<button name="debugMenu" value="createTemplates" type="submit">createTemplates()</button>
+	<button name="debugMenu" value="createArticles" type="submit">createArticles()</button>
 	<br />
 	<input type="text" name="dbName" placeholder="Database name"/>
 </form>
 
-<form name="configDb" action="" method="get">
+<form name="configDb"  method="get">
 	<br /><br />
 		<span style="font-family: 'Poiret One', cursive; font-size:70pt;">cmsProject</span>
 	<br /><br /><br />
@@ -297,11 +308,17 @@ if (isset($_GET["configDb"]))
 {
 	if (connect())
 	{
-		if (createdb())
-		{
-			createConnectFile();
-			createTemplates();
-		}
+	  if (createdb())
+	  {
+	  createConnectFile();
+	    if (createTemplates())
+	    {
+	      if (createArticles())
+	      {
+			echo '<br><br><form action="index.php"><button type="submit">Homepage</button></form>';
+	      }
+	    }
+	  }
 	}
 }
 
@@ -357,7 +374,12 @@ if (isset($_GET["configDb"]))
 						fillInput();
 					  </script>";
 				echo "<br />Database \"$dbName\" already exists!";
-				echo "<br><br>Please turn on \"Delete database if it already exists\" to replace it <br> or <br> give your database a different name.";
+				echo "<br><br>
+						<ul>
+							<li>Please turn on \"Delete database if it already exists\" to replace it </li>
+							<li>Give your database a different name</li>
+							<li>Go to <a href='index.php'>Homepage</a>. (Might not be working correctly!)</li>
+						</ul>";
 			}
 				else
 			{
@@ -419,11 +441,12 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 			if (mysql_query('INSERT INTO templates VALUES (NULL, "default", 1)'))
 			{
 				echo "<br> Values inserted into templates table";
-				echo '<br><br><form action="index.php"><button type="submit">Homepage</button></form>';
 			}
 			else
 			{
 				echo "<br> Error inserting values into templates table: " . mysql_error();
+				$success = false;
+				break;
 			}
 			$success = true;
 		}
@@ -442,6 +465,33 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 		return $success;
 	}
 
+// ------------------------------------ //
+
+	function createArticles()
+	{
+		$dbName = $_GET["dbName"];
+		mysql_select_db($dbName);
+		
+		if (mysql_query('CREATE TABLE articles(id INT AUTO_INCREMENT, PRIMARY KEY(id), publicationDate DATE, title VARCHAR(255), summary TEXT, content TEXT)'))
+		{
+			echo "<br> Articles table successfully created";
+			$success = true;
+		}
+		else
+		{
+			if (mysql_errno() == 1050 )
+			{
+				echo "Table already exists!";
+			}
+				else
+			{
+				echo "<br> Error creating table: " . mysql_error();  // exists - errno() 1050
+			}
+			$success = false;
+		}
+		return $success;
+	}
+	
 // -------------------------------------------  Debug Menu  ---------------------------------------- //
 
 if(isset($_GET['debugMenu']))
@@ -467,6 +517,10 @@ if(isset($_GET['debugMenu']))
 		case "createTemplates":
 			connect();
 			createTemplates();
+			break;
+		case "createArticles":
+			connect();
+			createArticles();
 			break;
 	}
 }

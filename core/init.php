@@ -2,8 +2,10 @@
 session_start();
 
 require 'database/connect.php';
+require 'classes/article.php';
 require 'functions/general.php';
 require 'functions/users.php';
+require 'functions/articles.php';
 
 if (loggedIn() === true) {
 	$sessionUserId = $_SESSION['userId'];

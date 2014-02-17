@@ -8,4 +8,4 @@ include '../templates/getTop.php';
 <?php include "../templates/" . $activeTemplate['name'] . "/includes/widgets/login.php"; ?>
 </center>
 
-<?php include "../templates/" . $activeTemplate['name'] . "/includes/overall/footer.php"; ?>
+<?php include '../templates/getBot.php'; ?>

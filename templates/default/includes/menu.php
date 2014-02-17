@@ -1,16 +1,12 @@
-<ul width="100%">
-
-	<li><a class="menuItem" href="index.php">Home</a></li>
-	
-	<li><a class="menuItem" href="">menu item 1</a></li>
-	
-	<li><a class="menuItem" href="">menu item 2</a></li>
-
-	<li><a class="menuItem" href="">menu item 3</a>
-		<ul>
-			<a href="#"><li>sub item 1</li></a>
-			<a href="#"><li>sub item 2</li></a>
-			<a href="#"><li>sub item 3</li></a>
-		</ul>
-	</li>
-</ul>
+<a href="index.php"><li>Home</li></a>
+<a href="archive.php"><li>Archive</li></a>
+<a href="downloads.php"><li>Downloads</li></a>
+<li>Docs
+	<ol>
+		<li>Tutorials</li>
+		<li>Manual and guide</li>
+		<li style="border-bottom:0px solid #fff;">API</li>
+	</ol>
+</li>
+<li>About</li>
+<li style="border-right:0px solid #fff;">Contacts</li>

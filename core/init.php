@@ -2,6 +2,8 @@
 session_start();
 
 require 'database/connect.php';
+
+require 'vars.php';
 require 'classes/article.php';
 require 'functions/general.php';
 require 'functions/users.php';

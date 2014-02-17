@@ -256,6 +256,7 @@
 	<button name="debugMenu" value="createConnectFile" type="submit">createConnectFile()</button>
 	<button name="debugMenu" value="createTemplates" type="submit">createTemplates()</button>
 	<button name="debugMenu" value="createArticles" type="submit">createArticles()</button>
+	<button name="debugMenu" value="logo" type="submit">logo()</button>
 	<br />
 	<input type="text" name="dbName" placeholder="Database name"/>
 </form>
@@ -313,6 +314,7 @@ if (isset($_GET["configDb"]))
 	  createConnectFile();
 	    if (createTemplates())
 	    {
+		logo();
 	      if (createArticles())
 	      {
 			echo '<br><br><form action="index.php"><button type="submit">Homepage</button></form>';
@@ -435,7 +437,7 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 		$dbName = $_GET["dbName"];
 		mysql_select_db($dbName);
 		
-		if (mysql_query('CREATE TABLE templates(id INT AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(30), active BOOLEAN)'))
+		if (mysql_query('CREATE TABLE templates(id INT AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(30) UNIQUE, active BOOLEAN)'))
 		{
 			echo "<br> Templates table successfully created";
 			if (mysql_query('INSERT INTO templates VALUES (NULL, "default", 1)'))
@@ -472,7 +474,7 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 		$dbName = $_GET["dbName"];
 		mysql_select_db($dbName);
 		
-		if (mysql_query('CREATE TABLE articles(id INT AUTO_INCREMENT, PRIMARY KEY(id), publicationDate DATE, title VARCHAR(255), summary TEXT, content TEXT)'))
+		if (mysql_query('CREATE TABLE articles(id INT AUTO_INCREMENT, PRIMARY KEY(id), publicationDate DATE, title VARCHAR(255), summary TEXT, content TEXT, tags TEXT)'))
 		{
 			echo "<br> Articles table successfully created";
 			$success = true;
@@ -490,6 +492,26 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 			$success = false;
 		}
 		return $success;
+	}
+	
+// ------------------------------------ //
+
+	function logo()
+	{
+	$dbName = $_GET["dbName"];
+	
+	include "core/database/connect.php";
+	include "core/vars.php";
+	
+	$templatePath = "templates/" . $activeTemplate['name'] . "/includes/";
+	
+	$fileName = $templatePath . "logo.php";
+	
+	$handle = fopen($fileName, 'w') or die('Cannot open file:  '.$my_file);
+	$data = $dbName;
+		fwrite($handle, $data);
+		fclose($handle);
+		echo "<br>Created logo";
 	}
 	
 // -------------------------------------------  Debug Menu  ---------------------------------------- //
@@ -521,6 +543,10 @@ if(isset($_GET['debugMenu']))
 		case "createArticles":
 			connect();
 			createArticles();
+			break;
+		case "logo":
+			connect();
+			logo();
 			break;
 	}
 }

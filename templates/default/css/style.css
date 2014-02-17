@@ -28,17 +28,27 @@
 	color:#000;
 }
 
-body{
+*{
+border:0px solid red;
+}
+
+body, html{
 	background:#111;
 	color: #fff;
 	font-family: Calibri, sans-serif;
 	margin:0px;
 	padding:0px;
+	height:100%;
 }
 
 a, a:visited, a:active, a:focus{
 	text-decoration: none;
 	color:#fff;
+}
+
+input[type="text"]{
+	padding:10px 50px 10px 10px;
+	border:0px;
 }
 
 select{
@@ -48,16 +58,6 @@ select{
 	color:#fff;
 	font-family:calibri;
 	font-size:10pt;
-}
-
-input{
-	padding:10px 50px 10px 10px;
-	border:0px;
-	transition:all 0.3s;
-}
-
-input:focus{
-	padding:10px 100px 10px 10px;
 }
 
 button{
@@ -76,6 +76,16 @@ button:hover{
 
 label{
 	cursor:pointer;
+}
+
+.textInput{
+	padding:10px 50px 10px 10px;
+	border:0px;
+	transition:all 0.3s;
+}
+
+.textInput:focus{
+	padding:10px 100px 10px 10px;
 }
 
 .pageTitle{
@@ -132,9 +142,10 @@ label{
 	border:0px solid red;
 	min-width: 800px;
 	width:100%;
-	min-height:650px;
+	min-height:100%;
 	margin: 0px auto;
 	padding:0px;
+	position:relative;
 }
 
 #logo{
@@ -208,12 +219,18 @@ label{
 #pages{
 	border:0px solid deeppink;
 	margin:10px 60px;
+	padding-bottom:200px;
 }
 
 #footer{
 	background:rgba(255,255,255,0.03);
 	margin-top:30px;
-	padding:8px 60px
+	padding:8px 0px;
+	height:150px;
+	width:100%;
+	position:absolute;
+	bottom:0px;
+	left:0px;
 }
 
 #footerMenu{

@@ -10,20 +10,23 @@ function archive() {
   
 	foreach ( $results['articles'] as $article ) {
 		?>
-		<h1 class="articleTitle">
-			<a href="viewArticle.php?action=viewArticle&amp;articleId=<?php echo $article->id?>">
-				<?php echo htmlspecialchars( $article->title )?>
-			</a>
-		</h1>
-		<p class="summary"><?php echo htmlspecialchars( $article->summary )?></p>
+		<div class="article">
+			<h1 class="articleTitle">
+				<a href="viewArticle.php?action=viewArticle&amp;articleId=<?php echo $article->id?>">
+					<?php echo htmlspecialchars( $article->title )?>
+				</a>
+			</h1>
+			<p class="summary"><?php echo htmlspecialchars( $article->summary )?></p>
 
-		<span class="pubDate"><?php echo date('j F Y', $article->publicationDate)?></span>
-		<?php if ($article->tags){ ?>
-		- <span class="tags"><?php echo htmlspecialchars($article->tags)?></span>
-		<?php }
+			<span class="pubDate"><?php echo date('j F Y', $article->publicationDate)?></span>
+			<?php if ($article->tags){ ?>
+			- <span class="tags"><?php echo htmlspecialchars($article->tags)?></span>
+		<?php } ?>
+		</div>
+		<?php
 	}
 	
-	?><p><?php echo $results['totalRows']?> article<?php echo ( $results['totalRows'] != 1 ) ? 's' : '' ?> in total.</p><?php
+	?><br /><p><?php echo $results['totalRows']?> article<?php echo ( $results['totalRows'] != 1 ) ? 's' : '' ?> in total.</p><?php
 }
 
 function tagPage($tag){
@@ -37,17 +40,20 @@ function tagPage($tag){
 	foreach ( $results['articles'] as $article ) {
 		if ($article->tags == $tag){
 			?>
-			<h1 class="articleTitle">
-				<a href="viewArticle.php?action=viewArticle&amp;articleId=<?php echo $article->id?>">
-					<?php echo htmlspecialchars( $article->title )?>
-				</a>
-			</h1>
-			<p class="summary"><?php echo htmlspecialchars( $article->summary )?></p>
+			<div class="article">
+				<h1 class="articleTitle">
+					<a href="viewArticle.php?action=viewArticle&amp;articleId=<?php echo $article->id?>">
+						<?php echo htmlspecialchars( $article->title )?>
+					</a>
+				</h1>
+				<p class="summary"><?php echo htmlspecialchars( $article->summary )?></p>
 
-			<span class="pubDate"><?php echo date('j F Y', $article->publicationDate)?></span>
-			<?php if ($article->tags){ ?>
-			- <span class="tags"><?php echo htmlspecialchars($article->tags)?></span>
-			<?php }
+				<span class="pubDate"><?php echo date('j F Y', $article->publicationDate)?></span>
+				<?php if ($article->tags){ ?>
+				- <span class="tags"><?php echo htmlspecialchars($article->tags)?></span>
+			<?php } ?>
+			</div>
+			<?php
 		}
 	}
 	
@@ -69,20 +75,21 @@ function viewArticle() {
 function homepage() {
   global $results;
   $results = array();
-  $data = article::getList(5);
+  $data = article::getList(4);
   $results['articles'] = $data['results'];
   $results['totalRows'] = $data['totalRows'];
   $results['pageTitle'] = "Page Title";
   
   //Apresentação
   foreach ( $results['articles'] as $article ) { ?>
+	<div class="article">
 		<a href="viewArticle.php?action=viewArticle&amp;articleId=<?php echo $article->id?>">
 			<h1 class="articleTitle">
 				<?php echo htmlspecialchars( $article->title )?>
 			</h1>
 		</a>
-		
 		<p class="summary"><?php echo htmlspecialchars( $article->summary )?></p>
+	</div>
 
 <?php }
 }
@@ -93,11 +100,11 @@ function newArticle() {
   $results['pageTitle'] = "New Article";
   $results['formAction'] = "newArticle";
 
-  if ( isset( $_GET['saveChanges'] ) ) {
+  if ( isset( $_POST['saveChanges'] ) ) {
 
     // User has posted the article edit form: save the new article
     $article = new Article;
-    $article->storeFormValues($_GET);
+    $article->storeFormValues($_POST);
     $article->insert();
     header( "Location: newArticle.php?status=changesSaved" );
 	

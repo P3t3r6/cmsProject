@@ -79,7 +79,7 @@
 		</td>
 		
 		<td style="width:50%;">
-			<h1 class="articleTitle">some shit</h1>
+			<h1 class="articleTitle">something</h1>
 		</td>
 		
 	</tr>
@@ -95,7 +95,7 @@
 		
 		<td style="width:50%;">
 			<h1 class="articleTitle">Articles</h1>
-			<button><a href="newArticle.php">Create</a></button>
+			<a href="newArticle.php"><button>Create</button></a>
 			<button>Edit</button>
 			<button>Delete</button>
 		</td>

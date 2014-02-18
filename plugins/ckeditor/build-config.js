@@ -95,6 +95,7 @@ var CKBUILDER_CONFIG = {
 		'wsc' : 1,
 		'wysiwygarea' : 1
 	},
+	extraPlugins: 'fastimage',
 	languages : {
 		'af' : 1,
 		'ar' : 1,

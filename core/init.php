@@ -10,8 +10,10 @@ require 'functions/users.php';
 require 'functions/articles.php';
 
 if (loggedIn() === true) {
-	$sessionUserId = $_SESSION['userId'];
-	$userData = userData($sessionUserId, 'userId', 'username', 'password', 'firstName', 'lastName', 'password', 'email');
+	$sessionUserId = $_SESSION['id'];
+	
+	global $userData;
+	$userData = userData($sessionUserId, 'id', 'username', 'password', 'firstName', 'lastName', 'email', 'level');
 	
 	if (userActive($userData['username']) === false) {
 		session_destroy();
@@ -19,6 +21,4 @@ if (loggedIn() === true) {
 		exit();
 	}
 }
-
-$errors = array();
 ?>

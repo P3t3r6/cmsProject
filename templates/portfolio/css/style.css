@@ -1,6 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Pacifico);
 
 @font-face {
+  font-family: 'Pacifico';
+  font-style: normal;
+  src: url('../../../resources/Pacifico.woff');
+}
+
+@font-face {
   font-family: 'Poiret One';
   font-style: normal;
   font-weight: 400;
@@ -46,7 +52,7 @@ a, a:visited, a:active, a:focus{
 	color:#111;
 }
 
-input[type="text"]{
+input[type="text"], input[type="password"]{
 	padding:10px 50px 10px 10px;
 	border:0px;
 	border-radius:2px;
@@ -65,8 +71,9 @@ select{
 button{
 	padding:10px 20px;
 	border:0px;
+	border-radius:2px;
 	background:rgba(0,0,0,0.05);
-	color:#222;
+	color:#444;
 	cursor:pointer;
 	transition:all 0.3s;
 }
@@ -100,10 +107,10 @@ label{
 
 .article{
 	background:rgba(0,0,0,0.05);
-	width:45%;
-	float:left;
 	padding:10px 15px;
-	margin:3px;
+	margin:2px;
+	/* width:266px; */
+	width:100%;
 	border-radius:3px;
 }
 
@@ -149,7 +156,7 @@ label{
 	min-width: 800px;
 	width: calc(100% - 210px);
 	min-height:100%;
-	margin: 0px 0px 0px 199px;
+	margin: 0px 0px 0px 209px;
 	padding:0px;
 	position:relative;
 }
@@ -237,7 +244,7 @@ label{
 
 #pages{
 	border:0px solid deeppink;
-	margin:20px 40px;
+	margin:20px 40px 0px 10px;
 	padding-bottom:200px;
 }
 

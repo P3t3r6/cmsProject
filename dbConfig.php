@@ -1,4 +1,4 @@
-<head>
+	<head>
 	<title>Welcome</title>
 	<style type="text/css">
 	
@@ -98,7 +98,7 @@
 			margin:0px;
 			display:block;
 			overflow:hidden;
-			box-shadow:inset 0px 5px 15px rgba(0,0,0,0.5);
+			box-shadow:inset 0px 5px 10px rgba(0,0,0,0.2);
 			max-height:0px;
 			transition:all 0.5s;
 		}
@@ -256,9 +256,14 @@
 	<button name="debugMenu" value="createConnectFile" type="submit">createConnectFile()</button>
 	<button name="debugMenu" value="createTemplates" type="submit">createTemplates()</button>
 	<button name="debugMenu" value="createArticles" type="submit">createArticles()</button>
+	<button name="debugMenu" value="createUsers" type="submit">createUsers()</button>
+	<button name="debugMenu" value="createRegTokens" type="submit">createRegtokens()</button>
 	<button name="debugMenu" value="logo" type="submit">logo()</button>
 	<br />
 	<input type="text" name="dbName" placeholder="Database name"/>
+	<input type="text" name="dbHost" placeholder="Database host"/>
+	<input type="text" name="dbUsername" placeholder="Database username"/>
+	<input type="password" name="dbPassword" placeholder="Database password"/>
 </form>
 
 <form name="configDb"  method="get">
@@ -289,46 +294,61 @@
 			</li>
 		</label>
 		
-		<label>
-			<li>
-				<label class="binary_switch">
-					<input type="checkbox">
-						<span class="binary_switch_track"></span>
-						<span class="binary_switch_button"></span>
-					</input>
-				</label>
-				Create users table
-			</li>
-		</label>
+		<li style="padding:3px;">
+			<input type="text" name="dbHost" placeholder="Database Host" style="margin:0px; height:40px; width:100%; box-shadow:inset 0px 0px 2px rgba(0,0,0,0.8);"/>
+		</li>
+	
+		<li style="padding:3px;">
+			<input type="text" name="dbUsername" placeholder="Database Username" style="margin:0px; height:40px; width:100%; box-shadow:inset 0px 0px 2px rgba(0,0,0,0.8);"/>
+		</li>
 		
+		<li style="padding:3px;">
+			<input type="password" name="dbPassword" placeholder="Database Password" style="margin:0px; height:40px; width:100%; box-shadow:inset 0px 0px 2px rgba(0,0,0,0.8);"/>
+		</li>	
 	</ul>
 </form>
 
 <?php
 if (isset($_GET["configDb"]))
 {
-	if (connect())
-	{
-	  if (createdb())
-	  {
-	  createConnectFile();
-	    if (createTemplates())
-	    {
+	if (connect()){
+	if (createdb()){
+		createConnectFile();
+	if (createTemplates()){
 		logo();
-	      if (createArticles())
-	      {
-			echo '<br><br><form action="index.php"><button type="submit">Homepage</button></form>';
-	      }
-	    }
-	  }
-	}
+	if (createArticles()){
+	if (createUsers()){
+	if (createRegtokens()){
+		newRegToken();
+		foreach ($errors as $error){
+			echo '<br />' . $error;
+		}
+		echo '<br><br><form action="index.php"><button type="submit">Homepage</button></form>';
+	}}}}}}
 }
 
 // -------------------------------------------- Functions ------------------------------------------- //
 
-	function connect()
-	{
-		if (mysql_connect('localhost','root',''))
+	function connect(){
+		if (isset($_GET['dbHost']) && $_GET['dbHost'] != ''){
+			$dbHost = $_GET['dbHost'];
+		} else {
+			$dbHost = 'localhost';
+		}
+		
+		if (isset($_GET['dbUsername']) && $_GET['dbUsername'] != ''){
+			$dbUsername = $_GET['dbUsername'];
+		} else {
+			$dbUsername = 'root';
+		}
+		
+		if (isset($_GET['dbPassword'])){
+			$dbPassword = $_GET['dbPassword'];
+		} else {
+			$dbPassword = '';
+		}
+		
+		if (mysql_connect($dbHost, $dbUsername, $dbPassword))
 		{
 			//echo "<br />Connected.";
 			$success = true;
@@ -341,10 +361,9 @@ if (isset($_GET["configDb"]))
 		return $success;
 	}
 	
-// ------------------------------------ //
+// ------------------------------------------------------------- //
 
-	function createdb()
-	{
+	function createdb(){
 		$dbName = $_GET["dbName"];
 		
 		if (isset($_GET["deleteIfExists"]) && $_GET["deleteIfExists"] == "true")
@@ -392,10 +411,9 @@ if (isset($_GET["configDb"]))
 		return $success;
 	}
 	
-// ------------------------------------ //
+// ------------------------------------------------------------- //
 	
-	function dropdb()
-	{
+	function dropdb(){
 		$dbName = $_GET["dbName"];
 		
 		if (mysql_query("DROP DATABASE $dbName"))
@@ -411,29 +429,50 @@ if (isset($_GET["configDb"]))
 		return $success;
 	}
 
-// ------------------------------------ //
+// ------------------------------------------------------------- //
 
-	function createConnectFile()
-	{
-		$dbName = $_GET["dbName"];
+	function createConnectFile(){
+		if (isset($_GET['dbHost']) && $_GET['dbHost'] != ''){
+			$dbHost = $_GET['dbHost'];
+		} else {
+			$dbHost = 'localhost';
+		}
+		
+		if (isset($_GET['dbUsername']) && $_GET['dbUsername'] != ''){
+			$dbUsername = $_GET['dbUsername'];
+		} else {
+			$dbUsername = 'root';
+		}
+		
+		if (isset($_GET['dbPassword'])){
+			$dbPassword = $_GET['dbPassword'];
+		} else {
+			$dbPassword = '';
+		}
+		
+		$dbName = $_GET['dbName'];
 		
 		$fileName = "core/database/connect.php";
-		$handle = fopen($fileName, 'w') or die('Cannot open file:  '.$my_file);
-		$data = "<?php
-\$connect_error = 'An error as ocurred. ini.php error_reporting(0); or connect.php';
+		$handle = fopen($fileName, 'w') or die('<br />Cannot open file: ' . $my_file);
+		$data = '<?php
+$connect_error = \'An error as ocurred. ini.php error_reporting(0); or connect.php\';
 
-mysql_connect('localhost', 'root', '') or die(\$connect_error);
-mysql_select_db('" . $dbName . "') or die(\$connect_error);
-?>";
+$dbHost = \'' . $dbHost . '\';
+$dbUser = \'' . $dbUsername . '\';
+$dbPass = \'' . $dbPassword . '\';
+$dbName = \'' . $dbName . '\';
+
+mysql_connect($dbHost, $dbUser, $dbPass) or die($connect_error);
+mysql_select_db($dbName) or die($connect_error);
+?>';
 			fwrite($handle, $data);
 			fclose($handle);
 			echo "<br>Created connect.php file";
 	}
 
-// ------------------------------------ //
+// ------------------------------------------------------------- //
 
-	function createTemplates()
-	{
+	function createTemplates(){
 		$dbName = $_GET["dbName"];
 		mysql_select_db($dbName);
 		
@@ -467,14 +506,13 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 		return $success;
 	}
 
-// ------------------------------------ //
+// ------------------------------------------------------------- //
 
-	function createArticles()
-	{
+	function createArticles(){
 		$dbName = $_GET["dbName"];
 		mysql_select_db($dbName);
 		
-		if (mysql_query('CREATE TABLE articles(id INT AUTO_INCREMENT, PRIMARY KEY(id), publicationDate DATE, title VARCHAR(255), summary TEXT, content TEXT, tags TEXT)'))
+		if (mysql_query('CREATE TABLE articles(id INT AUTO_INCREMENT, PRIMARY KEY(id), publicationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, title VARCHAR(255), summary TEXT, content TEXT, tags TEXT)'))
 		{
 			echo "<br> Articles table successfully created";
 			$success = true;
@@ -494,10 +532,74 @@ mysql_select_db('" . $dbName . "') or die(\$connect_error);
 		return $success;
 	}
 	
-// ------------------------------------ //
+// ------------------------------------------------------------- //
 
-	function logo()
-	{
+	function createUsers(){
+		$dbName = $_GET["dbName"];
+		mysql_select_db($dbName);
+		
+		if (mysql_query('CREATE TABLE users(id INT AUTO_INCREMENT, PRIMARY KEY(id), username TEXT, password TEXT, firstName TEXT, lastName TEXT, email TEXT, level INT, active BOOLEAN)'))
+		{
+			echo "<br> Users table successfully created";
+			$success = true;
+		}
+		else
+		{
+			if (mysql_errno() == 1050 )
+			{
+				echo "Table already exists!";
+			}
+				else
+			{
+				echo "<br> Error creating table: " . mysql_error();  // exists - errno() 1050
+			}
+			$success = false;
+		}
+		return $success;
+	}
+	
+// ------------------------------------------------------------- //
+
+	function createRegtokens(){
+		$dbName = $_GET["dbName"];
+		mysql_select_db($dbName);
+		
+		if (mysql_query('CREATE TABLE regtokens(id INT AUTO_INCREMENT, PRIMARY KEY(id), token TEXT, level INT, givenBy TEXT)'))
+		{
+			echo "<br> Regtokens table successfully created";
+			$success = true;
+		}
+		else
+		{
+			if (mysql_errno() == 1050 )
+			{
+				echo "Table already exists!";
+			}
+				else
+			{
+				echo "<br> Error creating table: " . mysql_error();  // exists - errno() 1050
+			}
+			$success = false;
+		}
+		return $success;
+	}
+	
+// ------------------------------------------------------------- //
+
+	function newRegToken(){
+		$token = md5(rand(100,2000));
+		
+		$query = 'INSERT INTO `regtokens` (`id`, `token`, `level`, `givenBy`) VALUES (NULL, \'' . $token . '\', 1, \' System \')';
+		mysql_query($query);
+		
+		global $errors;
+		$errors[] = 'Token created';
+		$errors[] = '<a style="color:#3b4;" href="backoffice/register.php?regToken=' . $token . '">backoffice/register.php?regToken=' . $token . '</a>';
+	}
+
+// ------------------------------------------------------------- //
+
+	function logo(){
 	$dbName = $_GET["dbName"];
 	
 	include "core/database/connect.php";
@@ -543,6 +645,14 @@ if(isset($_GET['debugMenu']))
 		case "createArticles":
 			connect();
 			createArticles();
+			break;
+		case "createUsers":
+			connect();
+			createUsers();
+			break;
+		case "createRegTokens":
+			connect();
+			createRegtokens();
 			break;
 		case "logo":
 			connect();

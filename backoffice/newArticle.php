@@ -1,11 +1,32 @@
 <?php
 include '../core/init.php';
-//protectPage();
+
+if (isset($_POST['articles'])){
+	$articles = $_POST['articles'];
+	
+	$_POST['saveChanges'] = true;
+	if ($articles == 'new'){
+		newArticle();
+	}
+}
+ 
+protectPage();
 include '../templates/getTop.php';
+
+if (isset($_GET['status']) && $_GET['status'] == 'saved'){
+	?>
+		<center>
+			<br />
+			<p style='color:#3b4; font-size:18pt;'> Saved!</p>
+			<a href="index.php"><button>Go to home</button></a>
+		</center>
+	<?php
+} else {
 ?>
 
 <script src="../plugins/ckeditor/ckeditor.js"></script>
-<h1 class="articleTitle">New Article</h1>
+
+<h1 class="pageTitle">New Article</h1>
 
 <form method="POST">
 <table>
@@ -26,8 +47,6 @@ include '../templates/getTop.php';
 			<input type="text" name="tags" id="tags" style="width:80%;" />
 			<br /><br />
 			
-			Publication Date (auto?)
-			<input type="date" name="publicationDate" id="publicationDate" placeholder="YYYY-MM-DD" required maxlength="10" value="<?php echo $results['article']->publicationDate ? date( "Y-m-d", $results['article']->publicationDate ) : "" ?>" />
 			<br /><br /><br /><br />
 			
 			<center><button name="articles" value="new" style="padding:10px 60px; font-size:13pt;">Submit</button></center>
@@ -46,15 +65,6 @@ include '../templates/getTop.php';
 	</script>
 </form>
 
-<?php
-	if (isset($_POST['articles'])){
-		$articles = $_POST['articles'];
-		
-		$_POST['saveChanges'] = true;
-		if ($articles == 'new'){
-			newArticle();
-		}
-	}
-?>
-
-<?php include '../templates/getBot.php'; ?>
+<?php 
+}
+include '../templates/getBot.php'; ?>

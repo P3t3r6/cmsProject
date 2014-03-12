@@ -13,6 +13,12 @@ function protectPage() {
 	}
 }
 
+function levelRestriction($level){
+	if ($userData['level'] === $level){
+		
+	}
+}
+
 function arraySanitize(&$item) {
 	$item = mysql_real_escape_string($item);
 }
@@ -21,10 +27,11 @@ function sanitize($data) {
 	return mysql_real_escape_string($data);
 }
 
-function outputErrors($errors) {
-	$output = array();
-	foreach($errors as $error) {
-		echo $error, '</br>';
+function outputErrors($errors){
+	if (empty($errors) === false){
+		foreach($errors as $error){
+			echo '&times; &nbsp;' . $error, '<br />';
+		}
 	}
 }
 ?>

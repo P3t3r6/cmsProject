@@ -37,8 +37,13 @@ style="width:300px; padding:3px; text-align:center; margin: 10px 0px;">
 			<td colspan="2" style="margin:0px; padding:0px;"><button style="margin:0px; padding:10px 71px;">Login</button></td>
 		</tr>
 		<tr>
-			<td style="margin:0px; padding:0px;"><button style="margin:0px; display:block; width:100%;">Register</button></td>
-			<td style="margin:0px; padding:0px;"><button href="register.php" style="margin:0px; display:block; width:100%;">Forgot?</button></td>
+			<td style="margin:0px; padding:0px;">
+				<button style="margin:0px; display:block; width:100%;">Register</button>
+			</td>
+			
+			<td style="margin:0px; padding:0px;">
+				<button href="register.php" style="margin:0px; display:block; width:100%;">Forgot?</button>
+			</td>
 		</tr>
 	</table>
 </form>

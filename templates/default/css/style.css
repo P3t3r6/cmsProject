@@ -46,7 +46,7 @@ a, a:visited, a:active, a:focus{
 	color:#fff;
 }
 
-input[type="text"]{
+input[type="text"], input[type="password"]{
 	padding:10px 50px 10px 10px;
 	border:0px;
 }
@@ -101,10 +101,11 @@ label{
 }
 
 .article{
-	background:rgba(0,0,0,0.05);
-	padding:1px 15px;
-	margin:2px;
+	background:rgba(0,0,0,0.1);
+	padding:10px 15px;
+	margin:5px 1px;
 	border-radius:3px;
+	box-shadow:inset 0px -1px 1px rgba(255,255,255,0.05);
 }
 
 .articleTitle{
@@ -112,8 +113,8 @@ label{
 	font-size:20pt;
 	font-weight:normal;
 	color:#fff;
-	margin:25px 0px 5px 0px;
-	padding:3px 0px;
+	margin:10px 0px 5px 0px;
+	padding:3px;
 	border-bottom:1px solid rgba(255,255,255,0.3);
 }
 
@@ -145,14 +146,72 @@ label{
 	visibility:hidden;
 }
 
+#lmhButton{
+	background:#222;
+	padding:3px 10px;
+	margin:6px 5px;
+	font-size:16pt;
+	position:absolute;
+	left:250px;
+	top:1px;
+	border-radius:2px 0px 0px 2px;
+	white-space:nowrap;
+	box-shadow:0px -1px 2px rgba(255,255,255,0.3);
+	transition:all 0.3s;
+}
+
+#lmhName{
+	background:#222;
+	font-size:9pt;
+	position:absolute;
+	left:31px;
+	top:0px; 
+	padding:9px 15px;
+	border-radius:0px 2px 2px 0px;
+	box-shadow:0px -1px 1px rgba(255,255,255,0.3);
+	border:0px solid red;
+	transition:all 0.2s;
+}
+
+#loginMenu{
+	border:0px solid blue;
+	background:#151515;
+	height:100%;
+	width:200px;
+	padding:10px 25px;
+	position:fixed;
+	top:0px;
+	left:-250px;
+	box-shadow:inset -5px 0px 40px rgba(0,0,0,0.4), inset -1px 0px 1px rgba(255,255,255,0.1);
+	z-index:100;
+	transition:all 0.5s;
+}
+
+#loginMenuHidder{
+	display:none;
+}
+
+#loginMenuHidder:checked ~ #mainDiv{
+	padding:0px 0px 0px 250px;
+}
+
+#loginMenuHidder:checked ~ #loginMenu{
+	left:0px;
+}
+
+#loginMenuHidder:checked  ~ #footer{
+	left:250px;
+}
+
 #mainDiv{
 	border:0px solid red;
-	min-width: 800px;
+	min-width: 850px;
 	width:100%;
 	min-height:100%;
 	margin: 0px auto;
 	padding:0px;
 	position:relative;
+	transition:all 0.5s;
 }
 
 #logo{
@@ -225,42 +284,46 @@ label{
 
 #pages{
 	border:0px solid deeppink;
-	margin:10px 60px;
+	margin:10px 50px 0px 50px;
 	padding-bottom:200px;
 }
 
 #footer{
 	background:rgba(255,255,255,0.03);
-	margin-top:30px;
+	margin:30px 0px 0px 0px;
 	padding:8px 0px;
 	height:150px;
 	width:100%;
 	position:absolute;
 	bottom:0px;
 	left:0px;
+	transition:all 0.5s;
 }
 
-#footerMenu{
+#footerMenu ul{
 	list-style:none;
 	color:#ddd;
 	display:inline-block;
 	margin:0px;
 }
 
-#footerMenuItem{
+#footerMenu ul li{
 	float:left;
 	padding:5px;
 	margin:0px 15px;
 }
 
-#footerMenuItem ul{
+#footerMenu ul li ol{
 	border-top:1px solid #ddd;
 	margin:0px;
-	padding:3px 5px;
+	padding:0px 0px;
 	color:#aaa;
 }
 
-#footerMenuItem ul li{
+#footerMenu ul li ol li{
 	list-style:none;
 	display:block;
+	float:none;
+	padding:0px;
+	margin:0px 5px;
 }

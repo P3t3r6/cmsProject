@@ -23,33 +23,36 @@ class Article
     if (isset($data['tags'])) 			 $this->tags = $data['tags'];
   }
   
-// Sets the object's properties using the edit form post values in the supplied array
-// @param assoc The form post values
-public function storeFormValues($params){
-	// Store all the parameters
-	$this->__construct( $params );
-	// Parse and store the publication date
-	/*if ( isset($params['publicationDate']) ) {
-		$publicationDate = explode ( '-', $params['publicationDate'] );
-		if ( count($publicationDate) == 3 ) {
-			list ( $y, $m, $d ) = $publicationDate;
-			$this->publicationDate = mktime ( 0, 0, 0, $m, $d, $y );
-		}
-	} else {
-	}*/
-}
+	// Sets the object's properties using the edit form post values in the supplied array
+	// @param assoc The form post values
+  public function storeFormValues ( $params ) {
+    // Store all the parameters
+    $this->__construct( $params );
+    // Parse and store the publication date
+    if ( isset($params['publicationDate']) ) {
+      $publicationDate = explode ( '-', $params['publicationDate'] );
 
-  
-public static function getById( $id ) {
-	$query = mysql_query('SELECT *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles WHERE id = ' . $id);
-	if (mysql_num_rows($query) > 0){
-		$data = mysql_fetch_assoc($query);
-		return new Article($data);
-	} else {
-		header('location:notFound');
-		exit;
-}
-}
+      if ( count($publicationDate) == 3 ) {
+        list ( $y, $m, $d ) = $publicationDate;
+        $this->publicationDate = mktime ( 0, 0, 0, $m, $d, $y );
+      }
+    }
+  }
+
+	// Returns an Article object matching the given article ID
+	// @param int The article ID
+	// @return Article|false The article object, or false if the record was not found or there was a problem
+
+  public static function getById( $id ) {
+  $conn = new PDO('mysql:host=localhost;dbname=cmsProject', 'root', '' );
+    $sql = "SELECT *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles WHERE id = :id";
+    $st = $conn->prepare( $sql );
+    $st->bindValue( ":id", $id, PDO::PARAM_INT );
+    $st->execute();
+    $row = $st->fetch();
+    $conn = null;
+    if ( $row ) return new Article( $row );
+  }
   
 	// Returns all (or a range of) Article objects in the DB
 
@@ -58,12 +61,7 @@ public static function getById( $id ) {
 	// @return Array|false A two-element array : results => array, a list of Article objects; totalRows => Total number of articles
 
   public static function getList( $numRows=1000000, $order="publicationDate DESC" ) {
-	global $dbHost;
-	global $dbName;
-	global $dbUser;
-	global $dbPass;
-	
-	$conn = new PDO('mysql:host=' . $dbHost . ';dbname=' . $dbName, $dbUser, $dbPass);
+	$conn = new PDO('mysql:host=localhost;dbname=cmsProject', 'root', '' );
     $sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles
             ORDER BY " . mysql_real_escape_string($order) . " LIMIT :numRows";
 
@@ -91,21 +89,15 @@ public static function getById( $id ) {
     if ( !is_null( $this->id ) ) trigger_error ( "Article::insert(): Attempt to insert an Article object that already has its ID property set (to $this->id).", E_USER_ERROR );
 
     // Insert the Article
-	global $dbHost;
-	global $dbName;
-	global $dbUser;
-	global $dbPass;
-	
-	$conn = new PDO('mysql:host=' . $dbHost . ';dbname=' . $dbName, $dbUser, $dbPass);
-	
-    $sql = "INSERT INTO articles ( title, summary, content, tags ) VALUES ( :title, :summary, :content, :tags )";
+	$conn = new PDO('mysql:host=localhost;dbname=cmsProject', 'root', '' );
+    $sql = "INSERT INTO articles ( publicationDate, title, summary, content, tags ) VALUES ( FROM_UNIXTIME(:publicationDate), :title, :summary, :content, :tags )";
     $st = $conn->prepare ( $sql );
-   // $st->bindValue( ":publicationDate", $this->publicationDate, PDO::PARAM_INT );
+    $st->bindValue( ":publicationDate", $this->publicationDate, PDO::PARAM_INT );
     $st->bindValue( ":title", $this->title, PDO::PARAM_STR );
     $st->bindValue( ":summary", $this->summary, PDO::PARAM_STR );
     $st->bindValue( ":content", $this->content, PDO::PARAM_STR );
     $st->bindValue( ":tags", $this->tags, PDO::PARAM_STR );
-	$st->execute();
+    $st->execute();
     $this->id = $conn->lastInsertId();
     $conn = null;
   }
@@ -118,12 +110,7 @@ public static function getById( $id ) {
     if ( is_null( $this->id ) ) trigger_error ( "Article::update(): Attempt to update an Article object that does not have its ID property set.", E_USER_ERROR );
    
     // Update the Article
-	global $dbHost;
-	global $dbName;
-	global $dbUser;
-	global $dbPass;
-	
-	$conn = new PDO('mysql:host=' . $dbHost . ';dbname=' . $dbName, $dbUser, $dbPass);
+	$conn = new PDO('mysql:host=localhost;dbname=cmsProject', 'root', '' );
     $sql = "UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), title=:title, summary=:summary, content=:content WHERE id = :id";
     $st = $conn->prepare ( $sql );
     $st->bindValue( ":publicationDate", $this->publicationDate, PDO::PARAM_INT );
@@ -143,12 +130,7 @@ public static function getById( $id ) {
     if ( is_null( $this->id ) ) trigger_error ( "Article::delete(): Attempt to delete an Article object that does not have its ID property set.", E_USER_ERROR );
 
     // Delete the Article
-	global $dbHost;
-	global $dbName;
-	global $dbUser;
-	global $dbPass;
-	
-	$conn = new PDO('mysql:host=' . $dbHost . ';dbname=' . $dbName, $dbUser, $dbPass);
+	$conn = new PDO('mysql:host=localhost;dbname=cmsProject', 'root', '' );
     $st = $conn->prepare ( "DELETE FROM articles WHERE id = :id LIMIT 1" );
     $st->bindValue( ":id", $this->id, PDO::PARAM_INT );
     $st->execute();

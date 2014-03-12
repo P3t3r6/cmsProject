@@ -1,6 +1,27 @@
 <?php
+// ----------------------------------------------------------------------------------
+
+date_default_timezone_set( "Europe/Lisbon" );
+
+// ----------------------------------------------------------------------------------
+
+$name = 'cmsProject';
+
+// ----------------------------------------------------------------------------------
+
+$rootPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $name ;
+$uriPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $name ;
+
+// ----------------------------------------------------------------------------------
+
 $query = mysql_query('SELECT * FROM `templates` WHERE `active` = 1');
 $activeTemplate = mysql_fetch_array($query);
 
-$templatePath = "../templates/" . $activeTemplate['name'] . "/includes/";
+$templatePath = $rootPath . '/templates/' . $activeTemplate['name'] . '/';
+
+// ----------------------------------------------------------------------------------
+
+$errors = array();
+
+// ----------------------------------------------------------------------------------
 ?>

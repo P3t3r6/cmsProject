@@ -1,11 +1,31 @@
 <?php
 include '../core/init.php';
+
+if (isset($_GET['regToken'])){
+
+	$token = $_GET['regToken'];
+	$query = mysql_query('SELECT COUNT(*) FROM `regtokens` WHERE `token` = \'' . $token . '\'');
+	
+	if (mysql_result($query, 0) >= 1){
+		echo '<p style="color:#3b4; position:absolute; top:20px; left:30px;">Token Validated</p>';
+	} else {
+		global $errors;
+		$errors[] = 'Invalid Token';
+		protectPage();
+	}
+} else {
+	protectPage();
+}
+
 registerPage();
 include '../templates/getTop.php';
 ?>
 
 <?php
 	if (isset($_GET['success'])){
+		if (isset($_GET['regToken'])){
+			mysql_query('DELETE FROM `regtokens` WHERE `token` = \'' . $token . '\'');
+		}
 		?>
 			<center>
 				<br />

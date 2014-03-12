@@ -1,6 +1,6 @@
 <a href="index.php"><li>Home</li></a>
 <a href="archive.php"><li>Archive</li></a>
-<a href="downloads.php"><li>Downloads</li></a>
+<a href="https://github.com/P3t3r6/cmsProject"><li>Downloads</li></a>
 <li>Docs
 	<ol>
 		<li>Tutorials</li>

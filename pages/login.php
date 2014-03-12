@@ -18,7 +18,7 @@ if (empty($_POST) == false) {
 		} else if (userActive($username) == false) {
 		$errors[] = 'Activate your account first!';
 		} else {
-			$_SESSION['userId'] = $login;
+			$_SESSION['id'] = $login;
 			header('location: index.php');
 			exit();
 		}

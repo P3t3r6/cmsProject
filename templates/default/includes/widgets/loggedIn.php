@@ -1,22 +1,20 @@
-<div style="text-align:center; width:200px; margin:15px auto 15px auto;">
-
-	Welcome <?php echo $userData['username']; ?>
-
-	</br>
-
-	<a href="myaccount.php" class="defaultBtn" style="display:block; width:200px; font-size:9pt; padding:3px 0px; margin:2px auto; border-radius:4px;">My account</a>
-
-	<form action="logout.php" method="post">
-		<input type="submit" value="Logout" class="defaultBtn" style="display:block; width:200px; font-size:9pt; padding:3px 0px; margin:2px auto; border-radius:4px;"/>
-	</form>
-	
-</div>
-
-
-<!--
-<ul>
-	<li><a href="">1</a></li>
-	<li><a href="">2</a></li>
-	<li><a href="">3</a></li>
-</ul>
--->
+	<center>
+		<span style="font-size:15pt;"><?= $userData['username'] ?></span>
+		<br />
+		<span style="font-size:10pt;">
+			<?php
+				echo ($userData['level'] == 1 ? 'God <br />' : '');
+				echo ($userData['level'] == 2 ? 'Admin <br />' : '');
+				echo ($userData['level'] == 3 ? 'Mod <br />' : '');
+			?>
+		</span>
+		<br />
+		<img src="<?= userImage(); ?>" style="width:100%; border-radius:3px; box-shadow:0px 5px 20px rgba(0,0,0,0.5);" />
+	</center>
+<?php
+if ($userData['level'] <= 2){
+	echo '<br /><a href="../backoffice"><button style="width:100%;">Backoffice</button></a>';
+}
+echo '<br /><a href="../pages/profile.php"><button style="width:100%;">Profile</button></a>';
+echo '<br /><a href="?logout=logout"><button style="width:100%;">Logout</button></a>';
+?>

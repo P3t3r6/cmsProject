@@ -14,4 +14,6 @@ CKEDITOR.editorConfig = function( config ) {
    config.filebrowserUploadUrl = '../plugins/ckeditor/kcfinder/upload.php?type=files';
    config.filebrowserImageUploadUrl = '../plugins/ckeditor/kcfinder/upload.php?type=images';
    config.filebrowserFlashUploadUrl = '../plugins/ckeditor/kcfinder/upload.php?type=flash';
+   
+   config.extraPlugins = 'tliyoutube';
 };

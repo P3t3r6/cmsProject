@@ -13,9 +13,11 @@ function protectPage() {
 	}
 }
 
-function levelRestriction($level){
-	if ($userData['level'] === $level){
-		
+function restrictionLevel($level){
+	global $userData;
+	if ($userData['level'] > $level){
+		header('location:accessDenied.php');
+		exit();
 	}
 }
 
@@ -31,6 +33,14 @@ function outputErrors($errors){
 	if (empty($errors) === false){
 		foreach($errors as $error){
 			echo '&times; &nbsp;' . $error, '<br />';
+		}
+	}
+}
+
+function outputMessages($msg){
+	if (empty($msg) === false){
+		foreach($msg as $msg){
+			echo '&#10004; &nbsp;' . $msg, '<br />';
 		}
 	}
 }

@@ -259,27 +259,31 @@ label{
 	left:0px;
 }
 
-#footerMenu{
+#footerMenu ul{
 	list-style:none;
 	color:#666;
 	display:inline-block;
 	margin:0px;
+	padding:0px;
 }
 
-#footerMenuItem{
+#footerMenu ul li{
 	float:left;
 	padding:5px;
 	margin:0px 15px;
 }
 
-#footerMenuItem ul{
+#footerMenu ul li ol{
 	border-top:1px solid #ddd;
 	margin:0px;
 	padding:3px 5px;
 	color:#aaa;
 }
 
-#footerMenuItem ul li{
+#footerMenu ul li ol li{
 	list-style:none;
 	display:block;
+	float:none;
+	padding:0px;
+	margin:0px 5px;
 }

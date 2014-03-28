@@ -3,7 +3,7 @@
 	
 	<div id="footer">
 		<ul id="footerMenu">
-			<?php include $templatePath . "footer.php"?>
+			<?php include $templatePath . 'includes/footer.php'?>
 		</ul>
 	</div>
 	</div>

@@ -1,5 +1,7 @@
 <?php
-include '../core/init.php';
+include '../core/init.php'; 
+protectPage();
+restrictionLevel(3);
 
 if (isset($_POST['articles'])){
 	$articles = $_POST['articles'];
@@ -9,8 +11,7 @@ if (isset($_POST['articles'])){
 		newArticle();
 	}
 }
- 
-protectPage();
+
 include '../templates/getTop.php';
 
 if (isset($_GET['status']) && $_GET['status'] == 'saved'){
@@ -18,52 +19,43 @@ if (isset($_GET['status']) && $_GET['status'] == 'saved'){
 		<center>
 			<br />
 			<p style='color:#3b4; font-size:18pt;'> Saved!</p>
-			<a href="index.php"><button>Go to home</button></a>
+			<div style="width:200px;">
+				<a href="index.php"><button style="width:200px;">Backoffice</button></a>
+				<a href="newArticle.php"><button style="width:200px;">Create a new article</button></a>
+			</div>
 		</center>
 	<?php
 } else {
 ?>
-
 <script src="../plugins/ckeditor/ckeditor.js"></script>
 
 <h1 class="pageTitle">New Article</h1>
 
-<form method="POST">
-<table>
-	<tr>
-		<td valign="top" style="padding:20px;">
-			Title
-			<br />
-			<input type="text" name="title" id="title" style="width:80%;" required/>
-			<br /><br />
-			
-			Summary
-			<br />
-			<input type="text" name="summary" id="summary" style="width:80%;" required>
-			<br /><br />
-			
-			Tags
-			<br />
-			<input type="text" name="tags" id="tags" style="width:80%;" />
-			<br /><br />
-			
-			<br /><br /><br /><br />
-			
-			<center><button name="articles" value="new" style="padding:10px 60px; font-size:13pt;">Submit</button></center>
-		</td>
-		
-		<td>
-			<br />
-			<textarea name="content" id="content" required></textarea>
-			<br />
-		</td>
-	</tr>
-</table>
+<form method="POST" style="border:0px solid red; width:100%;">
+	Title
+	<br />
+		<input type="text" name="title" id="title" style="width:95%;" required/>
+	<br /><br />
+	
+	Summary
+	<br />
+		<input type="text" name="summary" id="summary" style="width:95%;" required>
+	<br /><br />
 
-	<script>
-		CKEDITOR.replace('content');
-	</script>
+	<br />
+	<textarea name="content" id="content" required></textarea>
+	<br />
+	
+	Tags
+	<br />
+	<input type="text" name="tags" id="tags" style="width:95%;" />
+	<br /><br />
+	<center><button name="articles" value="new" style="width:100%; padding:10px; font-size:13pt;">Submit</button></center>
 </form>
+
+<script type="text/javascript">
+	CKEDITOR.replace('content');
+</script>
 
 <?php 
 }

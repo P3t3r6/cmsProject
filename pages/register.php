@@ -1,6 +1,6 @@
 <?php
 include '../core/init.php';
-registerPage();
+registerPage(4);
 include '../templates/getTop.php';
 ?>
 
@@ -17,16 +17,14 @@ include '../templates/getTop.php';
 		?>
 			<h1 class="pageTitle">Register</h1>
 			<form method="post">
-				<p/><input name="username" type="text" placeholder="Username" required/>
-				<p/><input name="password" type="password" placeholder="Password" required/>
-				<p/><input name="repeatPassword" type="password" placeholder="Repeat Password" required/>
-				<p/><input name="firstName" type="text" placeholder="First Name" required/>
-				<p/><input name="lastName" type="text" placeholder="Last Name" />
-				<p/><input name="email" type="text" placeholder="Email" required/>
-				
+				<input name="username" type="text" placeholder="Username" required/>
+				<br /><input name="password" type="password" placeholder="Password" required/>
+				<br /><input name="repeatPassword" type="password" placeholder="Repeat Password" required/>
+				<br /><input name="firstName" type="text" placeholder="First Name" required/>
+				<br /><input name="lastName" type="text" placeholder="Last Name" />
+				<br /><input name="email" type="text" placeholder="Email" required/>
+				<br /><button type="submit" name="register" value="register" style="margin-left:2px; width:209px;"> Submit </button>
 				<p style="color:rgb(200,50,50)"><?php outputErrors($errors); ?></p>
-				
-				<p/><button type="submit" name="register" value="register"> Submit </button>
 			</form>
 		<?php
 	}

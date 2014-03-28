@@ -5,4 +5,4 @@ options all -indexes
 RewriteEngine On
 #RewriteRule		^detail/(css|js|img)/(.*)?$ /$1/$2 [L,QSA,R=301]
 RewriteRule		^pages/([0-9]+)$		pages/viewArticle.php?action=viewArticle&articleId=$1 [L]
-RewriteRule		^pages/([a-zA-Z0-9]+)$		pages/$1.php [NC,L]
+RewriteRule		^pages/([^.]+)$		pages/$1.php [NC,L]

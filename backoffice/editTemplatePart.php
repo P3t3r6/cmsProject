@@ -1,5 +1,25 @@
 <?php include '../core/init.php';
 protectPage();
+restrictionLevel(2);
+
+if ((!isset($_GET['toEdit']) || $_GET['toEdit'] == '') && !isset($_GET['status'])){
+	header('location:index.php');
+	exit;
+} else if ((isset($_GET['toEdit']) && $_GET['toEdit'] != '')){
+	$toEdit = $_GET['toEdit'];
+	$fileToEdit = $templatePath . 'includes/' . $toEdit . '.php';
+}
+
+if (isset($_POST['save'])){
+	$fileName = $fileToEdit;
+	$handle = fopen($fileName, 'w') or die('Cannot open file:  '.$my_file);
+	$data = $_POST['content'];
+	fwrite($handle, $data);
+	fclose($handle);
+	header('location:?status=saved');
+	exit;
+}
+
 include '../templates/getTop.php';
 
 if (isset($_GET['status']) && $_GET['status'] == 'saved'){
@@ -11,13 +31,6 @@ if (isset($_GET['status']) && $_GET['status'] == 'saved'){
 		</center>
 	<?php
 } else {
-	if (!isset($_GET['toEdit']) || $_GET['toEdit'] == ''){
-		header('location:index.php');
-		exit;
-	} else {
-		$toEdit = $_GET['toEdit'];
-		$fileToEdit = $templatePath . 'includes/' . $toEdit . '.php';
-	}
 ?>
 
 <br />
@@ -40,16 +53,5 @@ CKEDITOR.replace('content');
 </script>
 
 <?php
-	if (isset($_POST['save'])){
-		$fileName = $fileToEdit;
-		$handle = fopen($fileName, 'w') or die('Cannot open file:  '.$my_file);
-		$data = $_POST['content'];
-		fwrite($handle, $data);
-		fclose($handle);
-		header('location:?status=saved');
-		exit;
-	}
 }
-?>
-
-<?php include '../templates/getBot.php'; ?>
+include '../templates/getBot.php'; ?>

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 
-<?php include $templatePath . "head.php"?>
+<?php include $templatePath . 'includes/head.php'?>
 
 <body>
 	<nav id="navMenu">
 		<br />
 		
 		<a id="logo" href="index.php">
-			<?php include $templatePath . "logo.php"?>
+			<?php include $templatePath . 'includes/logo.php'?>
 		</a>
 		
 		<br /><br />
 		
 		<ol id="menu">
-			<?php include $templatePath . "menu.php"?>
+			<?php include $templatePath . 'includes/menu.php'?>
 		</ol>
 
 		<a href="https://github.com/P3t3r6/cmsProject" style="position:absolute; bottom:10px; right:15px; opacity:0.9;">

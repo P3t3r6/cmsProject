@@ -83,9 +83,73 @@ public static function getById( $id ) {
     $conn = null;
     return ( array ( "results" => $list, "totalRows" => $totalRows[0] ) );
   }
+  
+public static function archiveGetList() {
+	$sql = "SELECT COUNT(id) FROM articles";
+	$query = mysql_query($sql);
+	$row = mysql_fetch_row($query);
+	$rows = $row[0];
+	$page_rows = 2;
+	$last = ceil($rows/$page_rows);
+	if($last < 1){
+		$last = 1;
+	}
+	$pagenum = 1;
+	if(isset($_GET['pn'])){
+		$pagenum = preg_replace('#[^0-9]#', '', $_GET['pn']);
+	}
+	if ($pagenum < 1) { 
+		$pagenum = 1; 
+	} else if ($pagenum > $last) { 
+		$pagenum = $last; 
+	}
+	$limit = 'LIMIT ' .($pagenum - 1) * $page_rows .',' .$page_rows;
+	$sql = "SELECT *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles ORDER BY id DESC $limit";
+
+	$query = mysql_query($sql);
+
+	$textline1 = "<b>$rows</b> Articles - ";
+	$textline2 = "Page <b>$pagenum</b> of <b>$last</b>";
+
+	$paginationCtrls = '';
+
+	if($last != 1){
+		if ($pagenum > 1) {
+			$previous = $pagenum - 1;
+			$paginationCtrls .= '<a href="'.$_SERVER['PHP_SELF'].'?pn='.$previous.'">Previous</a> &nbsp; &nbsp; ';
+			
+			for($i = $pagenum-4; $i < $pagenum; $i++){
+				if($i > 0){
+					$paginationCtrls .= '<a href="'.$_SERVER['PHP_SELF'].'?pn='.$i.'">'.$i.'</a> &nbsp; ';
+				}
+			}
+		}
+		
+		$paginationCtrls .= ''.$pagenum.' &nbsp; ';
+		
+		for($i = $pagenum+1; $i <= $last; $i++){
+			$paginationCtrls .= '<a href="'.$_SERVER['PHP_SELF'].'?pn='.$i.'">'.$i.'</a> &nbsp; ';
+			if($i >= $pagenum+4){
+				break;
+			}
+		}
+		
+		if ($pagenum != $last) {
+			$next = $pagenum + 1;
+			$paginationCtrls .= ' &nbsp; &nbsp; <a href="'.$_SERVER['PHP_SELF'].'?pn='.$next.'">Next</a> ';
+		}
+	}
+	$list = array();
+		while ($row = mysql_fetch_array($query)) {
+		  $article = new Article( $row );
+		  $list[] = $article;
+		}
+		
+    return ( array ( "results" => $list ) );
+  }
 
 	// Inserts the current Article object into the database, and sets its ID property.
-  public function insert() {
+public function insert() {
 
     // Does the Article object already have an ID?
     if ( !is_null( $this->id ) ) trigger_error ( "Article::insert(): Attempt to insert an Article object that already has its ID property set (to $this->id).", E_USER_ERROR );
@@ -124,12 +188,13 @@ public static function getById( $id ) {
 	global $dbPass;
 	
 	$conn = new PDO('mysql:host=' . $dbHost . ';dbname=' . $dbName, $dbUser, $dbPass);
-    $sql = "UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), title=:title, summary=:summary, content=:content WHERE id = :id";
+    $sql = "UPDATE articles SET title=:title, summary=:summary, content=:content, tags=:tags WHERE id = :id";
     $st = $conn->prepare ( $sql );
-    $st->bindValue( ":publicationDate", $this->publicationDate, PDO::PARAM_INT );
+    //$st->bindValue( ":publicationDate", $this->publicationDate, PDO::PARAM_INT );
     $st->bindValue( ":title", $this->title, PDO::PARAM_STR );
     $st->bindValue( ":summary", $this->summary, PDO::PARAM_STR );
     $st->bindValue( ":content", $this->content, PDO::PARAM_STR );
+    $st->bindValue( ":tags", $this->tags, PDO::PARAM_STR );
     $st->bindValue( ":id", $this->id, PDO::PARAM_INT );
     $st->execute();
     $conn = null;

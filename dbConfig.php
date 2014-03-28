@@ -1,16 +1,25 @@
-	<head>
+<?php
+session_start();
+?>
+<html>
+<head>
 	<title>Welcome</title>
 	<style type="text/css">
 	
 		@font-face {
-		  font-family: 'Poiret One';
-		  font-style: normal;
-		  font-weight: 400;
-		  src: url('resources/PoiretOne-Regular.ttf');
+			font-family: 'Poiret One';
+			font-style: normal;
+			font-weight: 400;
+			src: url('resources/PoiretOne-Regular.ttf');
 		}
 		
 		a, a:active, a:focus, a:visited, a:hover{
 			color:#fff;
+		}
+		
+		html{
+			margin:0px;
+			padding:0px;
 		}
 		
 		body{
@@ -19,6 +28,7 @@
 			text-align:center;
 			padding:25px 0px;
 			margin:0px;
+			min-width:1080px;
 			font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 			font-size:15pt;
 			line-height:20pt;
@@ -44,6 +54,22 @@
 		}
 		
 		button:hover{
+			background:#fff;
+			color:#000;
+		}
+		
+		.button{
+			background:#222;
+			color:#fff;
+			font-size:11pt;
+			padding:8px 15px;
+			border:0px;
+			cursor:pointer;
+			text-decoration:none;
+			transition:all 0.3s;
+		}
+		
+		.button:hover{
 			background:#fff;
 			color:#000;
 		}
@@ -81,7 +107,7 @@
 		}
 		
 		#menuHider:checked ~ #menu{
-			max-height:45px;
+			max-height:90px;
 		}
 		
 		#menuHider:checked ~ #menu li{
@@ -106,13 +132,13 @@
 		#menu li{
 			float:left;
 			display:inline;
-			width:24%;
+			width:24.3%;
 			margin:0px;
 			padding:10px 0px 10px 1%;
 			text-align:left;
 			opacity:0;
 			cursor:pointer;
-			-webkit-transform: translateY(-100%);
+			-webkit-transform: translateY(-200%);
 			transition:-webkit-transform 0.5s, opacity 1s, background 0.2s, color 0.2s;
 		}
 		
@@ -189,29 +215,34 @@
 			top:0px;
 			left:0px;
 			z-index:99;
-			transition:all 0.3s ease-in-out 0.3s;
+			transition:all 0.3s ease-in-out 0.1s;
 		}
 	</style>
 	
 	<script src="resources/jquery-1.10.2.js"></script>
 	<script type="text/javascript">
 		function deleteIfExistsPopup(){
-			if ($('#deleteIfExists').is(':checked'))
-			{
-				$('#popupbg').toggleClass('hide');
+			if ($('#deleteIfExists').is(':checked')){
+				$('#deleteIfExistsPopupbg').toggleClass('hide');
+			}
+		}
+		
+		function configAllPopup(){
+			if (!$('#configAll').is(':checked')){
+				$('#configAllPopupbg').toggleClass('hide');
 			}
 		}
 	</script>
 </head>
 
 <body>
-<div id="popupbg" class="popupbg hide">
-	<div class="popup">
+<div id="deleteIfExistsPopupbg" class="popupbg hide">
+	<div class="popup" style="margin-top:13%">
 		<div style="margin:0px auto; width:800px; text-align:left;">
 			<h2 style="color:#c44; font-weight:100;">Careful!</h2>
 			<p>This might delete important data to you!</p>
-			<button onClick="$('#popupbg').toggleClass('hide')">Ok</button>
-			<button onClick="$('#popupbg').toggleClass('hide'); $('#deleteIfExists').prop('checked', false);">Cancel</button>
+			<button onClick="$('#deleteIfExistsPopupbg').toggleClass('hide')">Ok</button>
+			<button onClick="$('#deleteIfExistsPopupbg').toggleClass('hide'); $('#deleteIfExists').prop('checked', false);">Cancel</button>
 			<p></p>
 		</div>
 	</div>
@@ -259,6 +290,7 @@
 	<button name="debugMenu" value="createUsers" type="submit">createUsers()</button>
 	<button name="debugMenu" value="createRegTokens" type="submit">createRegtokens()</button>
 	<button name="debugMenu" value="logo" type="submit">logo()</button>
+	<button name="debugMenu" value="session_destroy" type="submit">session_destroy()</button>
 	<br />
 	<input type="text" name="dbName" placeholder="Database name"/>
 	<input type="text" name="dbHost" placeholder="Database host"/>
@@ -266,7 +298,7 @@
 	<input type="password" name="dbPassword" placeholder="Database password"/>
 </form>
 
-<form name="configDb"  method="get">
+<form name="configDb" method="get">
 	<br /><br />
 		<span style="font-family: 'Poiret One', cursive; font-size:70pt;">cmsProject</span>
 	<br /><br /><br />
@@ -305,11 +337,126 @@
 		<li style="padding:3px;">
 			<input type="password" name="dbPassword" placeholder="Database Password" style="margin:0px; height:40px; width:100%; box-shadow:inset 0px 0px 2px rgba(0,0,0,0.8);"/>
 		</li>	
+	
+		<label>
+			<li>
+				<label class="binary_switch">
+					<input type="checkbox" name="configAll" onclick="configAllPopup()" id="configAll" value="true" checked>
+						<span class="binary_switch_track"></span>
+						<span class="binary_switch_button"></span>
+					</input>
+				</label>
+				Configure everything
+			</li>
+		</label>
 	</ul>
+	
+
+	<div id="configAllPopupbg" class="popupbg hide">
+		<div class="popup" style="margin-top:9%">
+			<div style="margin:0px auto; width:600px; text-align:left;">
+				<h2 style="color:#333; font-weight:100;">What do you want to setup?</h2>
+					
+					<label>
+						<label class="binary_switch">
+							<input type="checkbox" name="createdb" value="true" >
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Create Database
+					</label>
+					
+					<br />
+					<label>
+						<label class="binary_switch">
+							<input type="checkbox" name="createConnectFile" value="true" >
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Create Connect file
+					</label>
+					
+					<br />
+					<label>
+						<label class="binary_switch">
+							<input type="checkbox" name="createTemplates" value="true" >
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Create 'Templates' table
+					</label>
+					
+					<br />
+					<label>
+						<label class="binary_switch">
+							<input type="checkbox" name="logo" value="true" >
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Create logo
+					</label>
+					
+					<br />
+					<label>
+						<label class="binary_switch">
+							<input type="checkbox" name="createArticles" value="true" >
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Create 'Articles' table
+					</label>
+					
+					<br />
+					<label>
+						<label class="binary_switch">
+							<input type="checkbox" name="createUsers" value="true" >
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Create 'Users' table
+					</label>
+					
+					<br />
+					<label>
+						<label class="binary_switch">
+							<input type="checkbox" name="createRegtokens" value="true" >
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Create 'RegTokens' table
+					</label>
+					
+					<br />
+					<label>
+						<label class="binary_switch">
+							<input type="checkbox" name="newRegToken" value="true" >
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Generate token
+					</label>
+				
+				<p><a class="button" onClick="$('#configAllPopupbg').toggleClass('hide');">Close</a></p>
+				<p></p>
+			</div>
+		</div>
+	</div>
 </form>
 
+<form style="font-size:13pt; line-height:16pt;">
 <?php
-if (isset($_GET["configDb"]))
+$errors = array();
+$messages = array();
+
+if (isset($_GET['configDb']) && isset($_GET['configAll']) )
 {
 	if (connect()){
 	if (createdb()){
@@ -318,13 +465,48 @@ if (isset($_GET["configDb"]))
 		logo();
 	if (createArticles()){
 	if (createUsers()){
+	if (createComments()){
 	if (createRegtokens()){
 		newRegToken();
-		foreach ($errors as $error){
-			echo '<br />' . $error;
+		
+		if ($errors){
+			outputErrors($errors);
+			echo '<br /><button type="submit">Submit</button>';
+		} else {
+			outputMessages($messages);
+			session_destroy();
+			set0FileTo1();
+			renameRootFolder();
+			echo '<br /><br /><a href="index.php" class="button">Homepage</a>';
 		}
-		echo '<br><br><form action="index.php"><button type="submit">Homepage</button></form>';
-	}}}}}}
+	}}}}}}}
+}
+
+if (isset($_GET['configDb']) && !isset($_GET['configAll'])){	
+	if (isset($_SESSION['stored']) && $_SESSION['stored'] == true){
+		storedConnect();
+	} else {
+		connect();
+	}
+	
+	if (isset($_GET['createdb'])){ createdb();}
+	if (isset($_GET['createConnectFile'])){createConnectFile();}
+	if (isset($_GET['createTemplates']) || isset($_GET['overwriteTemplates'])){createTemplates();}
+	if (isset($_GET['logo'])){logo();}
+	if (isset($_GET['createArticles']) || isset($_GET['overwriteArticles'])){createArticles();}
+	if (isset($_GET['createUsers']) || isset($_GET['overwriteUsers'])){createUsers();}
+	if (isset($_GET['createComments()']) || isset($_GET['overwriteComments'])){createComments();}
+	if (isset($_GET['createRegtokens']) || isset($_GET['overwriteRegtokens'])){createRegtokens();}
+	if (isset($_GET['newRegToken'])){newRegToken();}
+	if ($errors){
+		outputErrors($errors);
+		echo '<br /><button type="submit" name="configDb">Submit</button>';
+	} else {
+		session_destroy();
+		set0FileTo1();
+		renameRootFolder();
+		echo '<br /><br /><a href="index.php" class="button">Homepage</a>';
+	}
 }
 
 // -------------------------------------------- Functions ------------------------------------------- //
@@ -351,10 +533,10 @@ if (isset($_GET["configDb"]))
 		if (mysql_connect($dbHost, $dbUsername, $dbPassword))
 		{
 			//echo "<br />Connected.";
+			mysql_select_db($_GET['dbName']);
+			storeConnect($dbHost, $dbUsername, $dbPassword);
 			$success = true;
-		}
-			else
-		{
+		} else {
 			echo mysql_error();
 			$success = false;
 		}
@@ -363,11 +545,27 @@ if (isset($_GET["configDb"]))
 	
 // ------------------------------------------------------------- //
 
+	function storeConnect($dbHost, $dbUsername, $dbPassword){
+		$_SESSION['dbHost'] = $dbHost;
+		$_SESSION['dbUser'] = $dbUsername;
+		$_SESSION['dbPass'] = $dbPassword;
+		$_SESSION['dbName'] = $_GET['dbName'];
+		$_SESSION['stored'] = 'true';
+	}
+
+// ------------------------------------------------------------- //
+
+	function storedConnect(){
+		mysql_connect($_SESSION['dbHost'], $_SESSION['dbUser'], $_SESSION['dbPass']);
+		mysql_select_db($_SESSION['dbName']);
+	}
+
+// ------------------------------------------------------------- //
+
 	function createdb(){
 		$dbName = $_GET["dbName"];
 		
-		if (isset($_GET["deleteIfExists"]) && $_GET["deleteIfExists"] == "true")
-		{
+		if (isset($_GET["deleteIfExists"]) && $_GET["deleteIfExists"] == "true"){
 			dropdb();
 		}
 		
@@ -393,7 +591,7 @@ if (isset($_GET["configDb"]))
 						
 						check();
 						fillInput();
-					  </script>";
+					 </script>";
 				echo "<br />Database \"$dbName\" already exists!";
 				echo "<br><br>
 						<ul>
@@ -404,7 +602,7 @@ if (isset($_GET["configDb"]))
 			}
 				else
 			{
-				echo "<br> Error creating database: " . mysql_error(); // exists - errno() 1007
+				echo "<br /> Error creating database: " . mysql_error(); // exists - errno() 1007
 			}
 			$success = false;
 		}
@@ -453,7 +651,7 @@ if (isset($_GET["configDb"]))
 		$dbName = $_GET['dbName'];
 		
 		$fileName = "core/database/connect.php";
-		$handle = fopen($fileName, 'w') or die('<br />Cannot open file: ' . $my_file);
+		$handle = fopen($fileName, 'w') or die('<br />Cannot open connect.php');
 		$data = '<?php
 $connect_error = \'An error as ocurred. ini.php error_reporting(0); or connect.php\';
 
@@ -468,6 +666,47 @@ mysql_select_db($dbName) or die($connect_error);
 			fwrite($handle, $data);
 			fclose($handle);
 			echo "<br>Created connect.php file";
+			createVarsFile();
+	}
+
+// ------------------------------------------------------------- //
+
+	function createVarsFile(){
+		$dbName = $_GET['dbName'];
+		
+		$fileName = 'core/vars.php';
+		$handle = fopen($fileName, 'w') or die('<br />Cannot open vars.php');
+		$data = '<?php
+// ----------------------------------------------------------------------------------
+
+date_default_timezone_set( "Europe/Lisbon" );
+
+// ----------------------------------------------------------------------------------
+
+$name = \'' . $dbName . '\';
+
+// ----------------------------------------------------------------------------------
+
+$rootPath = $_SERVER[\'DOCUMENT_ROOT\'] . \'/\' . $name ;
+$uriPath = $_SERVER[\'DOCUMENT_ROOT\'] . \'/\' . $name ;
+
+// ----------------------------------------------------------------------------------
+
+$query = mysql_query(\'SELECT * FROM `templates` WHERE `active` = 1\');
+$activeTemplate = mysql_fetch_array($query);
+
+$templatePath = $rootPath . \'/templates/\' . $activeTemplate[\'name\'] . \'/\';
+
+// ----------------------------------------------------------------------------------
+
+$errors = array();
+$msgs = array();
+
+// ----------------------------------------------------------------------------------
+?>';
+		fwrite($handle, $data);
+		fclose($handle);
+		echo "<br>Created vars.php file";
 	}
 
 // ------------------------------------------------------------- //
@@ -479,9 +718,10 @@ mysql_select_db($dbName) or die($connect_error);
 		if (mysql_query('CREATE TABLE templates(id INT AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(30) UNIQUE, active BOOLEAN)'))
 		{
 			echo "<br> Templates table successfully created";
-			if (mysql_query('INSERT INTO templates VALUES (NULL, "default", 1)'))
-			{
-				echo "<br> Values inserted into templates table";
+			if (mysql_query('INSERT INTO templates VALUES (NULL, "default", 1)')){
+				if (mysql_query('INSERT INTO templates VALUES (NULL, "portfolio", 0)')){
+					echo "<br> Values inserted into templates table";
+				}
 			}
 			else
 			{
@@ -494,12 +734,21 @@ mysql_select_db($dbName) or die($connect_error);
 		else
 		{
 			if (mysql_errno() == 1050 )
-			{
-				echo "Table already exists!";
-			}
+			{ ?>
+				<br /> Templates table already exists! 
+					<label style="font-size:10pt;">
+						<label class="binary_switch">
+							<input type="checkbox" name="overwriteTemplates" value="true">
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Overwrite?
+					</label>
+			<?php }
 				else
 			{
-				echo "<br> Error creating table: " . mysql_error();  // exists - errno() 1050
+				echo "<br /> Error creating table: " . mysql_error(); // exists - errno() 1050
 			}
 			$success = false;
 		}
@@ -509,8 +758,6 @@ mysql_select_db($dbName) or die($connect_error);
 // ------------------------------------------------------------- //
 
 	function createArticles(){
-		$dbName = $_GET["dbName"];
-		mysql_select_db($dbName);
 		
 		if (mysql_query('CREATE TABLE articles(id INT AUTO_INCREMENT, PRIMARY KEY(id), publicationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, title VARCHAR(255), summary TEXT, content TEXT, tags TEXT)'))
 		{
@@ -519,13 +766,24 @@ mysql_select_db($dbName) or die($connect_error);
 		}
 		else
 		{
-			if (mysql_errno() == 1050 )
-			{
-				echo "Table already exists!";
-			}
-				else
-			{
-				echo "<br> Error creating table: " . mysql_error();  // exists - errno() 1050
+			if (mysql_errno() == 1050 && isset($_GET['overwriteArticles'])){
+				echo 'drop table';
+			} else if (mysql_errno() == 1050){
+				global $errors;
+				$errors[] = ' ';
+			?>
+				<br /> Articles table already exists!
+				<label style="font-size:10pt;">
+						<label class="binary_switch">
+							<input type="checkbox" name="overwriteArticles" value="true">
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Overwrite?
+					</label>
+	  <?php } else {
+				 echo "<br> Error creating table: " . mysql_error(); // exists - errno() 1050
 			}
 			$success = false;
 		}
@@ -540,18 +798,29 @@ mysql_select_db($dbName) or die($connect_error);
 		
 		if (mysql_query('CREATE TABLE users(id INT AUTO_INCREMENT, PRIMARY KEY(id), username TEXT, password TEXT, firstName TEXT, lastName TEXT, email TEXT, level INT, active BOOLEAN)'))
 		{
-			echo "<br> Users table successfully created";
-			$success = true;
+			if (mysql_query('INSERT INTO users (`id`, `username`, `password`, `firstName`, `lastName`, `email`, `level`, `active`) VALUES (NULL, \'System\', NULL, \'System\', NULL, NULL, 1, 1)')){
+				echo "<br> Users table successfully created";
+				$success = true;
+			}
 		}
 		else
 		{
 			if (mysql_errno() == 1050 )
-			{
-				echo "Table already exists!";
-			}
+			{ ?>
+				<br /> Users table already exists!
+				<label style="font-size:10pt;">
+						<label class="binary_switch">
+							<input type="checkbox" name="overwriteTemplates" value="true">
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Overwrite?
+				</label>
+			<?php }
 				else
 			{
-				echo "<br> Error creating table: " . mysql_error();  // exists - errno() 1050
+				echo "<br> Error creating table: " . mysql_error(); // exists - errno() 1050
 			}
 			$success = false;
 		}
@@ -560,24 +829,46 @@ mysql_select_db($dbName) or die($connect_error);
 	
 // ------------------------------------------------------------- //
 
+	function createComments(){
+		if (mysql_query('CREATE TABLE comments (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY (id), articleId INT, userId INT, content TEXT, timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)'))
+		{
+			mysql_query('ALTER TABLE comments ADD FOREIGN KEY(articleId) REFERENCES articles(id) ON DELETE CASCADE ON UPDATE CASCADE;');
+			$success = true;
+		} else {
+			$success = false;
+		}
+		return $success;
+	}
+
+// ------------------------------------------------------------- //
+
 	function createRegtokens(){
 		$dbName = $_GET["dbName"];
 		mysql_select_db($dbName);
 		
 		if (mysql_query('CREATE TABLE regtokens(id INT AUTO_INCREMENT, PRIMARY KEY(id), token TEXT, level INT, givenBy TEXT)'))
 		{
-			echo "<br> Regtokens table successfully created";
+			echo "<br /> Regtokens table successfully created";
 			$success = true;
 		}
 		else
 		{
 			if (mysql_errno() == 1050 )
-			{
-				echo "Table already exists!";
-			}
+			{ ?>
+				<br />Regtokens table already exists!
+				<label style="font-size:10pt;">
+						<label class="binary_switch">
+							<input type="checkbox" name="overwriteRegtokens" value="true">
+								<span class="binary_switch_track"></span>
+								<span class="binary_switch_button"></span>
+							</input>
+						</label>
+					Overwrite?
+				</label>
+			<?php }
 				else
 			{
-				echo "<br> Error creating table: " . mysql_error();  // exists - errno() 1050
+				echo "<br /> Error creating table: " . mysql_error(); // exists - errno() 1050
 			}
 			$success = false;
 		}
@@ -591,10 +882,20 @@ mysql_select_db($dbName) or die($connect_error);
 		
 		$query = 'INSERT INTO `regtokens` (`id`, `token`, `level`, `givenBy`) VALUES (NULL, \'' . $token . '\', 1, \' System \')';
 		mysql_query($query);
-		
-		global $errors;
-		$errors[] = 'Token created';
-		$errors[] = '<a style="color:#3b4;" href="backoffice/register.php?regToken=' . $token . '">backoffice/register.php?regToken=' . $token . '</a>';
+		?>
+		<br />
+		<span style="">Token created</span>
+		<br />
+		<span style="font-size:14pt; line-height:15pt; color:#c33;">
+			It is important that you do this now, otherwise you'll have no control over your site.
+			<br />
+			Either do it now, or save the link and do it as soon as possible
+		</span>
+				
+		<p style="margin:10px; line-height:20pt;">
+			<a href="backoffice/register.php?regToken=<?= $token ?>" class="button">Register admin account</a>
+		</p>
+		<?php
 	}
 
 // ------------------------------------------------------------- //
@@ -609,56 +910,99 @@ mysql_select_db($dbName) or die($connect_error);
 	
 	$fileName = $templatePath . "logo.php";
 	
-	$handle = fopen($fileName, 'w') or die('Cannot open file:  '.$my_file);
+	$handle = fopen($fileName, 'w') or die('Cannot open file: '.$my_file);
 	$data = $dbName;
 		fwrite($handle, $data);
 		fclose($handle);
 		echo "<br>Created logo";
 	}
-	
-// -------------------------------------------  Debug Menu  ---------------------------------------- //
+
+
+// ------------------------------------------------------------- //
+
+	function set0FileTo1(){
+		$files = scandir('.');
+		foreach ($files as $file){
+			if ($file == '0'){
+				rename('0','1');
+			}
+		}
+	}
+
+// ------------------------------------------------------------- //
+
+	function renameRootFolder(){
+		$dbName = $_GET["dbName"];
+		$path = explode('\\', getcwd());
+		$folderName = end($path);
+		chdir('../');
+		rename($folderName, $dbName);
+	}
+
+// ------------------------------------------------------------- //
+
+	function outputMessages($msgs){
+		foreach ($msgs as $msg){
+				echo '<br />' . $msg;
+		}
+	}		
+
+// ------------------------------------------------------------- //
+
+	function outputErrors($errors){
+		foreach ($errors as $error){
+				echo '<br />' . $error;
+		}
+	}		
+
+// ------------------------------------------- Debug Menu ---------------------------------------- //
 
 if(isset($_GET['debugMenu']))
 {
 	$debugMenu = $_GET['debugMenu'];
 	
 	switch ($debugMenu){
-		case "connect":
+		case 'connect':
 			connect();
 			break;
-		case "dropdb":
+		case 'dropdb':
 			connect();
 			dropdb();
 			break;
-		case "createdb":
+		case 'createdb':
 			connect();
 			createdb();
 			break;
-		case "createConnectFile":
+		case 'createConnectFile':
 			connect();
 			createConnectFile();
 			break;
-		case "createTemplates":
+		case 'createTemplates':
 			connect();
 			createTemplates();
 			break;
-		case "createArticles":
+		case 'createArticles':
 			connect();
 			createArticles();
 			break;
-		case "createUsers":
+		case 'createUsers':
 			connect();
 			createUsers();
 			break;
-		case "createRegTokens":
+		case 'createRegTokens':
 			connect();
 			createRegtokens();
 			break;
-		case "logo":
+		case 'logo':
 			connect();
 			logo();
+			break;
+		case 'session_destroy':
+			session_destroy();
 			break;
 	}
 }
 ?>
+</form>
 </body>
+</html>

@@ -46,6 +46,11 @@ function userIdFromUsername($username){
 	return mysql_result($query, 0, 'id');
 }
 
+function usernameFromId($id){
+	$query = mysql_query("SELECT * FROM `users` WHERE `id` = '$id'");
+	return mysql_result($query, 0, 'username');
+}
+
 function emailExists($email){
 	$email = sanitize($email);
 	$query = mysql_query("SELECT COUNT(`id`) FROM `users` WHERE `email` = '$email'");
@@ -66,9 +71,9 @@ function newRegToken(){
 		$query = 'INSERT INTO `regtokens` (`id`, `token`, `level`, `givenBy`) VALUES (NULL, \'' . $token . '\', 3, \'' . $userData['username'] . '\')';
 		mysql_query($query);
 		
-		global $errors;
-		$errors[] = 'Token created';
-		$errors[] = '<a style="color:#3b4;" href="register.php?regToken=' . $token . '">backoffice/register.php?regToken=' . $token . '</a>';
+		global $msgs;
+		$msgs[] = 'Token created';
+		$msgs[] = '<a style="color:#3b4;" href="register.php?regToken=' . $token . '">backoffice/register.php?regToken=' . $token . '</a>';
 	}
 }
 
@@ -86,7 +91,7 @@ function registerUser($registerData){
 	}
 }
 
-function registerPage(){
+function registerPage($level){
 	if (isset($_POST['register'])){
 		global $errors;
 		$required = array('username', 'password', 'repeatPassword', 'firstName', 'email');
@@ -129,22 +134,23 @@ function registerPage(){
 				'password' 	=> $_POST['password'],
 				'firstName' => $_POST['firstName'],
 				'lastName' 	=> $_POST['lastName'],
-				'email' 	=> $_POST['email']
+				'email' 	=> $_POST['email'],
+				'level'	 	=> $level,
+				'active'	=> '1'
 			);
 			
 			if (registerUser($registerData)){
+				$login = login($_POST['username'], $_POST['password']);
+				$_SESSION['id'] = $login;
+				
 				if (empty($_GET)){
 					header('location:?success');
 					exit();
 				} else {
-				
 					if (isset($_GET['regToken'])){
 						header('location:?regToken=' . $_GET['regToken'] . '&success');
 						exit();
 					}
-					
-					header('location:&success');
-					exit();
 				}
 			} else {
 				echo 'error on register';
@@ -193,14 +199,30 @@ function loginPage(){
 	}
 }
 
-if (isset($_POST['logout']) or isset($_GET['logout'])){
+function userImage($id = null){
+	global $rootPath, $userData, $name;
+		if (!isset($id)){
+		$id = $userData['id'];
+	}
+	$imagePath = $rootPath . '/images/users/' . $id . '.jpg';
+	if (file_exists($imagePath)){
+		$imagePath = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $name . '/images/users/' . $id . '.jpg';
+	} else {
+		$imagePath = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $name . '/images/users/default.jpg';
+	}
+	
+	return $imagePath;
+}
+
+if (isset($_POST['logout']) || isset($_GET['logout'])){
 	logout();
 }
 
 function logout(){
-	session_start();
+	global $rootPath;
 	session_destroy();
 	header('location: index.php');
+	exit();
 }
 
 ?>

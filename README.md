@@ -3,4 +3,4 @@ cmsProject
 
 To do list!
 ----------
--Check if config has been done (Temporary index.php file/New file creation on config)
+-Nothing, yet so much to do atm
